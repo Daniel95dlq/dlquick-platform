@@ -1,0 +1,436 @@
+{
+  "categories": [
+    {
+      "id": "deliveries",
+      "name": "Deliveries",
+      "icon": "🚚",
+      "description": "Fast and reliable delivery services across the UK",
+      "image": "/img/deliveries.jpg",
+      "services": [
+        {
+          "id": "food-delivery",
+          "name": "Food Delivery",
+          "description": "Restaurant and takeaway delivery in under 45 minutes",
+          "icon": "🍔",
+          "pricing": "From £3.99",
+          "features": ["Real-time tracking", "Hot food guarantee", "No minimum order"]
+        },
+        {
+          "id": "groceries",
+          "name": "Groceries",
+          "description": "Fresh groceries from your favourite stores",
+          "icon": "🛒",
+          "pricing": "From £4.99",
+          "features": ["Same-day delivery", "Fresh guarantee", "Contactless delivery"]
+        },
+        {
+          "id": "parcels",
+          "name": "Parcels (Same-Day)",
+          "description": "Same-day parcel delivery across the city",
+          "icon": "📦",
+          "pricing": "From £5.99",
+          "features": ["Same-day delivery", "Proof of delivery", "Insurance included"]
+        },
+        {
+          "id": "click-collect",
+          "name": "Click & Collect Assistant",
+          "description": "We collect your online orders for you",
+          "icon": "🛍️",
+          "pricing": "From £3.99",
+          "features": ["Queue-free collection", "Multiple stores", "Secure handover"]
+        },
+        {
+          "id": "scheduled-auto",
+          "name": "Scheduled Auto-Deliveries",
+          "description": "Regular deliveries on your schedule",
+          "icon": "📅",
+          "pricing": "From £4.99",
+          "features": ["Weekly/monthly plans", "Auto-scheduling", "Flexible timing"]
+        },
+        {
+          "id": "people-to-people",
+          "name": "People-to-People Deliveries",
+          "description": "Send items directly between people",
+          "icon": "👥",
+          "pricing": "From £4.99",
+          "features": ["Direct delivery", "Photo confirmation", "Real-time updates"]
+        },
+        {
+          "id": "locker-to-people",
+          "name": "Locker-to-People Deliveries",
+          "description": "Collect from lockers and deliver to you",
+          "icon": "🔒",
+          "pricing": "From £3.99",
+          "features": ["Amazon lockers", "Parcel shops", "Convenient pickup"]
+        },
+        {
+          "id": "store-to-home",
+          "name": "Store-to-Home (Bulky Items)",
+          "description": "Large item delivery from stores like IKEA",
+          "icon": "🏠",
+          "pricing": "From £19.99",
+          "features": ["Assembly service", "Upstairs delivery", "White glove service"]
+        },
+        {
+          "id": "multi-stop-parcel",
+          "name": "Multi-Stop Parcel Routes",
+          "description": "Bulk deliveries with up to 100 parcels per van",
+          "icon": "🚐",
+          "pricing": "£6.99/parcel",
+          "features": ["Route optimisation", "Bulk discounts", "Professional service"]
+        }
+      ]
+    },
+    {
+      "id": "removals",
+      "name": "Removals",
+      "icon": "📦",
+      "description": "Professional removal services with trained teams",
+      "image": "/img/removals.jpg",
+      "services": [
+        {
+          "id": "home-removals",
+          "name": "Home Removals",
+          "description": "Complete home moving service",
+          "icon": "🏠",
+          "pricing": "From £299",
+          "features": ["Professional team", "Full insurance", "Packing service"]
+        },
+        {
+          "id": "storage-home",
+          "name": "Storage ↔ Home",
+          "description": "Moving items to/from storage",
+          "icon": "🏪",
+          "pricing": "From £199",
+          "features": ["Secure handling", "Inventory tracking", "Flexible scheduling"]
+        },
+        {
+          "id": "storage-storage",
+          "name": "Storage ↔ Storage",
+          "description": "Transfer between storage facilities",
+          "icon": "📋",
+          "pricing": "From £149",
+          "features": ["Direct transfer", "No intermediate stops", "Professional handling"]
+        },
+        {
+          "id": "packing-unpacking",
+          "name": "Packing & Unpacking",
+          "description": "Professional packing services",
+          "icon": "📦",
+          "pricing": "From £25/hour",
+          "features": ["Quality materials", "Fragile item care", "Room-by-room service"]
+        },
+        {
+          "id": "dismantling-assembly",
+          "name": "Dismantling & Reassembly",
+          "description": "Furniture dismantling and reassembly",
+          "icon": "🔧",
+          "pricing": "From £35/hour",
+          "features": ["Expert technicians", "All furniture types", "Tool provision"]
+        }
+      ]
+    },
+    {
+      "id": "trades",
+      "name": "Trades & Repairs",
+      "icon": "🔧",
+      "description": "Certified tradespeople for all your repair needs",
+      "image": "/img/trades.jpg",
+      "services": [
+        {
+          "id": "electrician",
+          "name": "Electrician (Certified)",
+          "description": "Qualified electricians for all electrical work",
+          "icon": "⚡",
+          "pricing": "From £65/hour",
+          "features": ["Certified professionals", "Safety guaranteed", "Emergency callouts"]
+        },
+        {
+          "id": "plumber",
+          "name": "Plumber",
+          "description": "Professional plumbing services",
+          "icon": "🔧",
+          "pricing": "From £55/hour",
+          "features": ["Emergency service", "All plumbing work", "Guaranteed repairs"]
+        },
+        {
+          "id": "locksmith",
+          "name": "Locksmith (24/7)",
+          "description": "24/7 locksmith services",
+          "icon": "🔐",
+          "pricing": "From £75",
+          "features": ["24/7 availability", "Emergency lockouts", "Security upgrades"]
+        },
+        {
+          "id": "handyman",
+          "name": "Handyman",
+          "description": "General maintenance and repairs",
+          "icon": "🔨",
+          "pricing": "From £35/hour",
+          "features": ["Multi-skilled", "Small repairs", "Home maintenance"]
+        },
+        {
+          "id": "car-body-repairs",
+          "name": "Car Body Repairs",
+          "description": "Professional car body repair services",
+          "icon": "🚗",
+          "pricing": "Quote on inspection",
+          "features": ["Insurance approved", "Quality finish", "Mobile service"]
+        },
+        {
+          "id": "wheels-refurbishment",
+          "name": "Wheels Refurbishment",
+          "description": "Alloy wheel repair and refurbishment",
+          "icon": "⚙️",
+          "pricing": "From £65/wheel",
+          "features": ["Like-new finish", "Colour matching", "Mobile service"]
+        },
+        {
+          "id": "mobile-mechanical",
+          "name": "Mobile Mechanical Call-Outs",
+          "description": "Mobile mechanic services",
+          "icon": "🔧",
+          "pricing": "From £45/hour",
+          "features": ["At your location", "Diagnostic tools", "Same-day service"]
+        },
+        {
+          "id": "motorcycle-transport",
+          "name": "Motorcycle Transport & Repairs",
+          "description": "Specialist motorcycle services",
+          "icon": "🏍️",
+          "pricing": "From £85",
+          "features": ["Secure transport", "Specialist repairs", "Collection/delivery"]
+        }
+      ]
+    },
+    {
+      "id": "home",
+      "name": "Home & Garden",
+      "icon": "🏡",
+      "description": "Home cleaning and garden maintenance services",
+      "image": "/img/home.jpg",
+      "services": [
+        {
+          "id": "cleaning-domestic",
+          "name": "Cleaning (Domestic + Commercial)",
+          "description": "Professional cleaning services",
+          "icon": "🧹",
+          "pricing": "From £15/hour",
+          "features": ["Regular or one-off", "Eco-friendly products", "Insured cleaners"]
+        },
+        {
+          "id": "carpet-cleaning",
+          "name": "Carpet Cleaning",
+          "description": "Deep carpet and upholstery cleaning",
+          "icon": "🛋️",
+          "pricing": "From £25/room",
+          "features": ["Steam cleaning", "Stain removal", "Fast drying"]
+        },
+        {
+          "id": "window-cleaning",
+          "name": "Window Cleaning",
+          "description": "Professional window cleaning service",
+          "icon": "🪟",
+          "pricing": "From £35/visit",
+          "features": ["Inside and outside", "Streak-free finish", "Regular service"]
+        },
+        {
+          "id": "gardening",
+          "name": "Gardening",
+          "description": "Garden maintenance and landscaping",
+          "icon": "🌱",
+          "pricing": "From £25/hour",
+          "features": ["Lawn care", "Hedge trimming", "Garden design"]
+        }
+      ]
+    },
+    {
+      "id": "auto",
+      "name": "Auto & Transport",
+      "icon": "🚗",
+      "description": "Vehicle services and automotive marketplace",
+      "image": "/img/auto.jpg",
+      "services": [
+        {
+          "id": "tyre-services",
+          "name": "Tyre Services (Mobile Fitting)",
+          "description": "Mobile tyre fitting and replacement",
+          "icon": "🛞",
+          "pricing": "From £45/tyre",
+          "features": ["Mobile fitting", "All tyre brands", "Wheel balancing"]
+        },
+        {
+          "id": "car-ads",
+          "name": "Car Ads",
+          "description": "Buy and sell cars marketplace",
+          "icon": "🚙",
+          "pricing": "Coming Soon",
+          "features": ["Verified listings", "Finance options", "Trade-in service"],
+          "comingSoon": true
+        },
+        {
+          "id": "car-parts-marketplace",
+          "name": "Car Parts Marketplace",
+          "description": "Buy and sell car parts",
+          "icon": "🔧",
+          "pricing": "Coming Soon",
+          "features": ["Genuine parts", "Compatibility check", "Fast delivery"],
+          "comingSoon": true
+        }
+      ]
+    },
+    {
+      "id": "personal",
+      "name": "Personal & Events",
+      "icon": "💼",
+      "description": "Personal services and event specialists",
+      "image": "/img/personal.jpg",
+      "services": [
+        {
+          "id": "barber",
+          "name": "Barber (Home/Shop)",
+          "description": "Professional barber services",
+          "icon": "✂️",
+          "pricing": "From £18",
+          "features": ["Home visits", "Shop bookings", "Beard trimming"]
+        },
+        {
+          "id": "beauty",
+          "name": "Beauty (Hair & Nails)",
+          "description": "Hair and nail beauty services",
+          "icon": "💅",
+          "pricing": "From £25",
+          "features": ["Mobile service", "All treatments", "Professional products"]
+        },
+        {
+          "id": "photographers",
+          "name": "Photographers",
+          "description": "Professional photography services",
+          "icon": "📸",
+          "pricing": "From £150",
+          "features": ["Event photography", "Portrait sessions", "Digital delivery"]
+        },
+        {
+          "id": "djs",
+          "name": "DJs",
+          "description": "Professional DJ services for events",
+          "icon": "🎵",
+          "pricing": "From £200",
+          "features": ["All music genres", "Professional equipment", "Event planning"]
+        },
+        {
+          "id": "security",
+          "name": "Bouncers / Security",
+          "description": "Professional security services",
+          "icon": "🛡️",
+          "pricing": "From £25/hour",
+          "features": ["Licensed security", "Event security", "Personal protection"]
+        },
+        {
+          "id": "decorators",
+          "name": "Decorators",
+          "description": "Interior and exterior decorating",
+          "icon": "🎨",
+          "pricing": "From £180/day",
+          "features": ["Interior design", "Painting services", "Wallpaper hanging"]
+        }
+      ]
+    },
+    {
+      "id": "pets",
+      "name": "Pets",
+      "icon": "🐕",
+      "description": "Professional pet care services",
+      "image": "/img/pets.jpg",
+      "services": [
+        {
+          "id": "dog-walking",
+          "name": "Dog Walking",
+          "description": "Professional dog walking services",
+          "icon": "🐕",
+          "pricing": "From £12/walk",
+          "features": ["Insured walkers", "Group or solo walks", "Photo updates"]
+        },
+        {
+          "id": "pet-sitting",
+          "name": "Pet Sitting",
+          "description": "In-home pet sitting services",
+          "icon": "🏠",
+          "pricing": "From £25/visit",
+          "features": ["In your home", "Overnight stays", "All pets welcome"]
+        },
+        {
+          "id": "pet-feeding",
+          "name": "Pet Feeding",
+          "description": "Regular pet feeding visits",
+          "icon": "🍽️",
+          "pricing": "From £8/visit",
+          "features": ["Regular visits", "Medication admin", "Play time included"]
+        }
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Business & Logistics",
+      "icon": "🏢",
+      "description": "B2B logistics and business solutions",
+      "image": "/img/business.jpg",
+      "services": [
+        {
+          "id": "estate-agent-partner",
+          "name": "Estate Agent Partner Mode",
+          "description": "Dedicated services for estate agents",
+          "icon": "🏠",
+          "pricing": "Custom pricing",
+          "features": ["Key holding", "Property services", "Viewing support"]
+        },
+        {
+          "id": "b2b-logistics",
+          "name": "B2B Logistics",
+          "description": "Business-to-business logistics solutions",
+          "icon": "🚛",
+          "pricing": "Custom pricing",
+          "features": ["Regular routes", "Bulk pricing", "Account management"]
+        },
+        {
+          "id": "warehouse-dropoff",
+          "name": "Warehouse Drop-Off & Pickup",
+          "description": "eBay/Vinted seller logistics support",
+          "icon": "📦",
+          "pricing": "From £3.99",
+          "features": ["Collection service", "Drop-off to depots", "Bulk discounts"]
+        }
+      ]
+    }
+  ],
+  "featuredServices": [
+    "food-delivery",
+    "groceries",
+    "home-removals",
+    "electrician",
+    "cleaning-domestic",
+    "tyre-services",
+    "dog-walking",
+    "b2b-logistics"
+  ],
+  "comingSoonFeatures": [
+    {
+      "name": "Marketplace (Clothes & Items)",
+      "description": "Buy and sell pre-loved items",
+      "icon": "👕",
+      "eta": "Q1 2025"
+    },
+    {
+      "name": "Car Marketplace",
+      "description": "Complete automotive marketplace",
+      "icon": "🚗",
+      "eta": "Q2 2025"
+    },
+    {
+      "name": "POS Integrations",
+      "description": "EPOS Now, Square, Clover, Shopify POS",
+      "icon": "💳",
+      "eta": "Q1 2025"
+    }
+  ]
+}

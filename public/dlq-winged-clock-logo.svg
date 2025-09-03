@@ -1,0 +1,95 @@
+<svg width="120" height="80" viewBox="0 0 120 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  {/* Wings */}
+  <path d="M20 35C15 32 8 30 2 35C8 40 15 38 20 35Z" fill="url(#wingGradient)" />
+  <path d="M100 35C105 32 112 30 118 35C112 40 105 38 100 35Z" fill="url(#wingGradient)" />
+  
+  {/* Left Wing Detail */}
+  <path d="M18 33C13 31 6 32 1 36C6 39 13 37 18 33Z" fill="url(#wingDetailGradient)" />
+  <path d="M16 31C11 30 5 31 1 34C5 37 11 35 16 31Z" fill="url(#wingDetailGradient)" opacity="0.8" />
+  
+  {/* Right Wing Detail */}
+  <path d="M102 33C107 31 114 32 119 36C114 39 107 37 102 33Z" fill="url(#wingDetailGradient)" />
+  <path d="M104 31C109 30 115 31 119 34C115 37 109 35 104 31Z" fill="url(#wingDetailGradient)" opacity="0.8" />
+  
+  {/* Main Clock Circle */}
+  <circle cx="60" cy="40" r="25" fill="url(#clockGradient)" stroke="url(#clockBorder)" strokeWidth="2" />
+  
+  {/* Clock Inner Ring */}
+  <circle cx="60" cy="40" r="20" fill="none" stroke="url(#innerRing)" strokeWidth="1.5" />
+  
+  {/* Clock Marks */}
+  <rect x="59" y="18" width="2" height="4" fill="#D4AF37" rx="1" />
+  <rect x="59" y="58" width="2" height="4" fill="#D4AF37" rx="1" />
+  <rect x="78" y="39" width="4" height="2" fill="#D4AF37" rx="1" />
+  <rect x="38" y="39" width="4" height="2" fill="#D4AF37" rx="1" />
+  
+  {/* Smaller marks */}
+  <rect x="59.5" y="22" width="1" height="3" fill="#D4AF37" opacity="0.7" rx="0.5" />
+  <rect x="59.5" y="55" width="1" height="3" fill="#D4AF37" opacity="0.7" rx="0.5" />
+  <rect x="74" y="39.5" width="3" height="1" fill="#D4AF37" opacity="0.7" rx="0.5" />
+  <rect x="43" y="39.5" width="3" height="1" fill="#D4AF37" opacity="0.7" rx="0.5" />
+  
+  {/* Clock Hands */}
+  <line x1="60" y1="40" x2="60" y2="28" stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" />
+  <line x1="60" y1="40" x2="70" y2="40" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round" />
+  
+  {/* Center dot */}
+  <circle cx="60" cy="40" r="3" fill="#D4AF37" />
+  <circle cx="60" cy="40" r="1.5" fill="#0B1C39" />
+  
+  {/* Crown on top */}
+  <rect x="58" y="12" width="4" height="3" fill="url(#crownGradient)" rx="1" />
+  <rect x="57" y="14" width="6" height="2" fill="url(#crownGradient)" rx="1" />
+  <circle cx="60" cy="11" r="1.5" fill="#D4AF37" />
+  
+  {/* Speed lines effect */}
+  <path d="M25 25L35 30" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+  <path d="M25 35L35 35" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+  <path d="M25 45L35 40" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+  
+  <path d="M95 25L85 30" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+  <path d="M95 35L85 35" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+  <path d="M95 45L85 40" stroke="url(#speedGradient)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6" />
+  
+  {/* Gradients */}
+  <defs>
+    <linearGradient id="wingGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style={{stopColor: "#D4AF37", stopOpacity: 0.9}} />
+      <stop offset="50%" style={{stopColor: "#F4D03F", stopOpacity: 1}} />
+      <stop offset="100%" style={{stopColor: "#D4AF37", stopOpacity: 0.9}} />
+    </linearGradient>
+    
+    <linearGradient id="wingDetailGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style={{stopColor: "#B8860B", stopOpacity: 0.8}} />
+      <stop offset="100%" style={{stopColor: "#D4AF37", stopOpacity: 1}} />
+    </linearGradient>
+    
+    <radialGradient id="clockGradient" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" style={{stopColor: "#1e3a8a", stopOpacity: 1}} />
+      <stop offset="70%" style={{stopColor: "#0B1C39", stopOpacity: 1}} />
+      <stop offset="100%" style={{stopColor: "#000000", stopOpacity: 1}} />
+    </radialGradient>
+    
+    <linearGradient id="clockBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style={{stopColor: "#D4AF37", stopOpacity: 1}} />
+      <stop offset="50%" style={{stopColor: "#F4D03F", stopOpacity: 1}} />
+      <stop offset="100%" style={{stopColor: "#B8860B", stopOpacity: 1}} />
+    </linearGradient>
+    
+    <linearGradient id="innerRing" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style={{stopColor: "#D4AF37", stopOpacity: 0.6}} />
+      <stop offset="100%" style={{stopColor: "#D4AF37", stopOpacity: 0.3}} />
+    </linearGradient>
+    
+    <linearGradient id="crownGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style={{stopColor: "#F4D03F", stopOpacity: 1}} />
+      <stop offset="100%" style={{stopColor: "#D4AF37", stopOpacity: 1}} />
+    </linearGradient>
+    
+    <linearGradient id="speedGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style={{stopColor: "#D4AF37", stopOpacity: 0}} />
+      <stop offset="50%" style={{stopColor: "#D4AF37", stopOpacity: 0.8}} />
+      <stop offset="100%" style={{stopColor: "#D4AF37", stopOpacity: 0}} />
+    </linearGradient>
+  </defs>
+</svg>

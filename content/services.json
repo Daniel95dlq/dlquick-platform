@@ -1,0 +1,94 @@
+[
+  {
+    "category": "Deliveries",
+    "icon": "delivery.svg",
+    "services": [
+      {"title": "Food Delivery", "desc": "Min £4/order driver, 20% commission, no refund at food returns.", "status": "Live", "img": "food.jpg"},
+      {"title": "Groceries", "desc": "Same-day, extra tags (vegan, halal etc.)", "status": "Live", "img": "groceries.jpg"},
+      {"title": "Parcels", "desc": "Same-day local; bulk mode up to 100 parcels", "status": "Live", "img": "parcels.jpg"},
+      {"title": "Click & Collect Assistant", "desc": "Retail order pickup", "status": "Live", "img": "clickcollect.jpg"},
+      {"title": "Scheduled Auto-Deliveries", "desc": "Recurring orders", "status": "Live", "img": "scheduled.jpg"},
+      {"title": "People-to-People Deliveries", "desc": "Personal handovers", "status": "Live", "img": "people.jpg"},
+      {"title": "Locker-to-People Deliveries", "desc": "InPost/Amazon Locker style", "status": "Live", "img": "locker.jpg"},
+      {"title": "Store-to-Home bulky", "desc": "IKEA-style large items", "status": "Live", "img": "bulky.jpg"}
+    ]
+  },
+  {
+    "category": "Removals",
+    "icon": "removals.svg",
+    "services": [
+      {"title": "Home Removals", "desc": "Helpers, floors, packing, dismantle", "status": "Live", "img": "removals.jpg"},
+      {"title": "Storage ↔ Home", "desc": "Templates included", "status": "Live", "img": "storagehome.jpg"},
+      {"title": "Storage ↔ Storage", "desc": "Templates included", "status": "Live", "img": "storagestorage.jpg"},
+      {"title": "Helpers (0–3+)", "desc": "Optional, calculated in price", "status": "Live", "img": "helpers.jpg"},
+      {"title": "Packing & Unpacking", "desc": "Client selection", "status": "Live", "img": "packing.jpg"},
+      {"title": "Dismantling & Reassembly", "desc": "Optional add-on", "status": "Live", "img": "dismantle.jpg"},
+      {"title": "Extra Stops (multi-drop)", "desc": "Auto calculation", "status": "Live", "img": "multidrop.jpg"},
+      {"title": "Protective Materials", "desc": "Bubble wrap, covers", "status": "Live", "img": "protective.jpg"}
+    ]
+  },
+  {
+    "category": "Trades & Repairs",
+    "icon": "trades.svg",
+    "services": [
+      {"title": "Electrician", "desc": "Certification required", "status": "Live", "img": "electrician.jpg"},
+      {"title": "Plumber", "desc": "Emergencies & scheduled", "status": "Live", "img": "plumber.jpg"},
+      {"title": "Locksmith", "desc": "24/7 emergencies", "status": "Live", "img": "locksmith.jpg"},
+      {"title": "Handyman", "desc": "General repairs", "status": "Live", "img": "handyman.jpg"},
+      {"title": "Car Body Repairs", "desc": "Alloy wheel, body refurbishment", "status": "Live", "img": "carbody.jpg"},
+      {"title": "Wheels Refurbishment", "desc": "-", "status": "Live", "img": "wheels.jpg"},
+      {"title": "Mobile Mechanical Call-Outs", "desc": "-", "status": "Live", "img": "mechanic.jpg"},
+      {"title": "Motorcycle Transport & Repairs", "desc": "-", "status": "Live", "img": "motorcycle.jpg"}
+    ]
+  },
+  {
+    "category": "Home & Garden",
+    "icon": "home.svg",
+    "services": [
+      {"title": "Cleaning", "desc": "Domestic & commercial", "status": "Live", "img": "cleaning.jpg"},
+      {"title": "Carpet Cleaning", "desc": "Subcategory Cleaning", "status": "Live", "img": "carpet.jpg"},
+      {"title": "Window Cleaning", "desc": "On-demand", "status": "Live", "img": "window.jpg"},
+      {"title": "Gardening", "desc": "-", "status": "Live", "img": "gardening.jpg"}
+    ]
+  },
+  {
+    "category": "Auto & Transport",
+    "icon": "auto.svg",
+    "services": [
+      {"title": "Tyre Services", "desc": "Mobile tyre fitting", "status": "Live", "img": "tyre.jpg"},
+      {"title": "Car Ads", "desc": "Marketplace ads", "status": "Coming Soon", "img": "carads.jpg"},
+      {"title": "Car Parts Marketplace", "desc": "Local/national delivery", "status": "Coming Soon", "img": "carparts.jpg"},
+      {"title": "Motorcycle Services", "desc": "Transport + repairs", "status": "Live", "img": "motorcycle.jpg"}
+    ]
+  },
+  {
+    "category": "Personal & Events",
+    "icon": "personal.svg",
+    "services": [
+      {"title": "Barber", "desc": "In-home / in-shop", "status": "Live", "img": "barber.jpg"},
+      {"title": "Beauty (Hair & Nails)", "desc": "In-home / salon", "status": "Live", "img": "beauty.jpg"},
+      {"title": "Photographers", "desc": "Event services", "status": "Live", "img": "photographer.jpg"},
+      {"title": "DJs", "desc": "Event services", "status": "Live", "img": "dj.jpg"},
+      {"title": "Bouncers / Security", "desc": "Event services", "status": "Live", "img": "bouncer.jpg"},
+      {"title": "Decorators", "desc": "Event services", "status": "Live", "img": "decorator.jpg"}
+    ]
+  },
+  {
+    "category": "Pets",
+    "icon": "pets.svg",
+    "services": [
+      {"title": "Dog Walking", "desc": "-", "status": "Live", "img": "dog.jpg"},
+      {"title": "Pet Sitting", "desc": "-", "status": "Live", "img": "petsitting.jpg"},
+      {"title": "Pet Feeding", "desc": "-", "status": "Live", "img": "petfeeding.jpg"}
+    ]
+  },
+  {
+    "category": "Business & Logistics",
+    "icon": "business.svg",
+    "services": [
+      {"title": "Estate Agent Partner Mode", "desc": "Real estate collaboration", "status": "Live", "img": "estate.jpg"},
+      {"title": "B2B Logistics", "desc": "Business contracts", "status": "Live", "img": "b2b.jpg"},
+      {"title": "Warehouse Drop-Off & Pickup", "desc": "eBay/Vinted seller support", "status": "Live", "img": "warehouse.jpg"}
+    ]
+  }
+]

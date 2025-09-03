@@ -1,0 +1,6 @@
+<svg width="180" height="48" viewBox="0 0 180 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="180" height="48" rx="12" fill="#070E22"/>
+<text x="16" y="31" font-family="Verdana" font-size="22" fill="#D4AF37">DLQuick</text>
+<circle cx="152" cy="24" r="12" stroke="#D4AF37" stroke-width="2"/>
+<path d="M152 16 L156 20 L152 24" stroke="#D4AF37" stroke-width="2" fill="none"/>
+</svg>
