@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/legal/[slug]/page": "app/legal/[slug]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/partner/route": "app/api/partner/route.js",
+  "/legal/buyer-protection/page": "app/legal/buyer-protection/page.js",
+  "/legal/cookies/page": "app/legal/cookies/page.js",
+  "/legal/merchant-agreement/page": "app/legal/merchant-agreement/page.js",
+  "/legal/page": "app/legal/page.js",
+  "/legal/partner-agreement/page": "app/legal/partner-agreement/page.js",
+  "/legal/privacy/page": "app/legal/privacy/page.js",
+  "/legal/terms/page": "app/legal/terms/page.js",
+  "/partners/page": "app/partners/page.js",
+  "/removals/page": "app/removals/page.js",
+  "/track/page": "app/track/page.js",
+  "/services/page": "app/services/page.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/page": "app/page.js",
+  "/services/[slug]/page": "app/services/[slug]/page.js"
+}

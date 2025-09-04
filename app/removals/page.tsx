@@ -160,7 +160,11 @@ const RemovalsPage: React.FC = () => {
       }
     })
 
-    const total = basePrice + floorCharges + helperCharges + stopCharges + extraCharges
+  const subtotal = basePrice + floorCharges + helperCharges + stopCharges + extraCharges
+  // DLQ transparent platform fee (15%)
+  const dlqFee = Math.round(subtotal * 0.15)
+  breakdown.push({ item: 'DLQ Platform Fee (15%)', price: dlqFee })
+  const total = subtotal + dlqFee
 
     setCalculation({
       basePrice,
@@ -400,8 +404,8 @@ const RemovalsPage: React.FC = () => {
                     </div>
                     
                     <div className="text-xs text-gray-400 mt-2">
-                      * Price includes: Professional removal team, fully insured service, 
-                      basic moving equipment. Additional time charged at £65/hour.
+                      * Transparent pricing: includes DLQ 15% platform fee, professional team, full insurance, 
+                      and basic moving equipment. Additional time charged at £65/hour.
                     </div>
                     
                     {/* Action Buttons */}

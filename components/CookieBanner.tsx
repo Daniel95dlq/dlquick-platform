@@ -7,6 +7,7 @@ const KEY = 'dlq-consent'
 
 export default function CookieBanner() {
 	const [visible, setVisible] = useState(false)
+	const [openPrefs, setOpenPrefs] = useState(false)
 
 	useEffect(() => {
 		try {
@@ -24,6 +25,12 @@ export default function CookieBanner() {
 		setVisible(false)
 	}
 
+	const savePrefs = (analytics: boolean) => {
+		try { localStorage.setItem(KEY, analytics ? 'accepted' : 'functional') } catch {}
+		setOpenPrefs(false)
+		setVisible(false)
+	}
+
 	if (!visible) return null
 
 	return (
@@ -38,12 +45,29 @@ export default function CookieBanner() {
 						<button onClick={decline} className="px-4 py-2 rounded-lg border border-white/20 text-gray-200 hover:bg-white/10">
 							Decline
 						</button>
+						<button onClick={() => setOpenPrefs(true)} className="px-4 py-2 rounded-lg border border-white/20 text-gray-200 hover:bg-white/10">
+							Preferences
+						</button>
 						<button onClick={accept} className="px-4 py-2 rounded-lg bg-brand-gold text-brand-navy font-semibold border border-yellow-400/50">
 							Accept
 						</button>
 					</div>
 				</div>
 			</div>
+
+			{openPrefs && (
+				<div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+					<div className="absolute inset-0 bg-black/60" onClick={() => setOpenPrefs(false)} />
+					<div className="relative z-10 max-w-md w-full rounded-2xl border border-yellow-400/30 bg-[rgba(10,18,36,0.96)] p-6">
+						<h3 className="text-lg font-bold text-white mb-3">Cookie Preferences</h3>
+						<p className="text-sm text-gray-300 mb-4">Choose whether to allow analytics cookies.</p>
+						<div className="flex gap-3 justify-end">
+							<button onClick={() => savePrefs(false)} className="px-4 py-2 rounded-lg border border-white/20 text-gray-200 hover:bg-white/10">Functional only</button>
+							<button onClick={() => savePrefs(true)} className="px-4 py-2 rounded-lg bg-brand-gold text-brand-navy font-semibold border border-yellow-400/50">Allow analytics</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }
