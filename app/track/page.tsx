@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSearchParams } from 'next/navigation'
 
 interface TrackingStage {
   id: string
@@ -42,11 +43,36 @@ const TrackPage: React.FC = () => {
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [paymentStatus, setPaymentStatus] = useState<'success' | 'cancelled' | null>(null)
+  
+  const searchParams = useSearchParams()
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { orderId: '' }
   })
+
+  useEffect(() => {
+    // Check for payment success/failure in URL
+    const success = searchParams.get('success')
+    const cancelled = searchParams.get('cancelled')
+    const orderParam = searchParams.get('order')
+    
+    if (success === 'true') {
+      setPaymentStatus('success')
+    } else if (cancelled === 'true') {
+      setPaymentStatus('cancelled')
+    }
+    
+    // Auto-populate order ID if provided in URL
+    if (orderParam) {
+      setValue('orderId', orderParam)
+      // Auto-track the order if payment was successful
+      if (success === 'true') {
+        handleTrack({ orderId: orderParam })
+      }
+    }
+  }, [searchParams, setValue])
 
   const handleTrack = async (values: FormValues) => {
     setLoading(true)
@@ -100,6 +126,39 @@ const TrackPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-brand-navy/90 to-brand-navy/70" />
         
         <div className="relative z-10 max-w-4xl mx-auto">
+          {/* Payment Status Notifications */}
+          {paymentStatus === 'success' && (
+            <div className="mb-8 bg-green-500/20 border border-green-500/30 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-green-300 font-semibold">Payment Successful!</h3>
+                  <p className="text-green-200 text-sm">Your booking has been confirmed and payment processed successfully.</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {paymentStatus === 'cancelled' && (
+            <div className="mb-8 bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-yellow-300 font-semibold">Payment Cancelled</h3>
+                  <p className="text-yellow-200 text-sm">Your payment was cancelled. You can try booking again or contact us for assistance.</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
               Track Your <span className="text-brand-gold">Order</span>

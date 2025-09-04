@@ -3,6 +3,8 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
 import SEO from '@/components/SEO';
+import AuthProvider from '@/components/AuthProvider';
+import ChatWidget from '@/components/ChatWidget';
 
 export const metadata = {
   title: 'DLQuick — From the store to your door',
@@ -18,11 +20,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-  <SEO />
-        <Nav />
-        {children}
-        <Footer />
-        <CookieBanner />
+        <AuthProvider>
+          <SEO />
+          <Nav />
+          {children}
+          <Footer />
+          <CookieBanner />
+          <ChatWidget />
+        </AuthProvider>
       </body>
     </html>
   );
