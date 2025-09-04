@@ -1,7 +1,10 @@
-'use client'
+"use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 interface TrackingStage {
   id: string
@@ -31,94 +34,41 @@ interface TrackingData {
   photos?: string[]
 }
 
+const schema = z.object({ orderId: z.string().min(5, 'Please enter a valid order ID') })
+
+type FormValues = z.infer<typeof schema>
+
 const TrackPage: React.FC = () => {
-  const [orderId, setOrderId] = useState('')
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Mock tracking data for demonstration
-  const mockTrackingData: TrackingData = {
-    orderId: 'DLQ-2024-089234',
-    status: 'in-transit',
-    eta: '14:30',
-    currentLocation: 'Liverpool City Centre',
-    vehicle: {
-      type: 'Van',
-      regPlate: 'DLQ 123',
-      branded: true,
-      driverName: 'James Wilson',
-      driverPhoto: '/img/driver-placeholder.jpg'
-    },
-    stages: [
-      {
-        id: 'order-placed',
-        name: 'Order Placed',
-        description: 'Your order has been received and confirmed',
-        completed: true,
-        timestamp: '2024-09-03 12:15',
-        icon: '📋'
-      },
-      {
-        id: 'preparing',
-        name: 'Preparing',
-        description: 'Items are being prepared for collection',
-        completed: true,
-        timestamp: '2024-09-03 12:45',
-        icon: '📦'
-      },
-      {
-        id: 'collected',
-        name: 'Collected',
-        description: 'Items collected and loaded for delivery',
-        completed: true,
-        timestamp: '2024-09-03 13:20',
-        icon: '🚚'
-      },
-      {
-        id: 'in-transit',
-        name: 'In Transit',
-        description: 'On the way to your delivery address',
-        completed: true,
-        timestamp: '2024-09-03 13:45',
-        icon: '🛣️'
-      },
-      {
-        id: 'delivered',
-        name: 'Delivered',
-        description: 'Successfully delivered to recipient',
-        completed: false,
-        icon: '✅'
-      }
-    ],
-    notes: [
-      'Driver will ring doorbell',
-      'Please ensure someone is available to receive',
-      'Contact driver if any issues: 07123 456789'
-    ],
-    photos: []
-  }
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { orderId: '' }
+  })
 
-  const handleTrack = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!orderId.trim()) {
-      setError('Please enter a valid order ID')
-      return
-    }
-
+  const handleTrack = async (values: FormValues) => {
     setLoading(true)
     setError('')
-
-    // Simulate API call
-    setTimeout(() => {
-      if (orderId.toLowerCase().includes('dlq') || orderId.length > 5) {
-        setTrackingData(mockTrackingData)
-      } else {
-        setError('Order not found. Please check your order ID and try again.')
-        setTrackingData(null)
+    setTrackingData(null)
+    try {
+      const res = await fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: values.orderId })
+      })
+      if (!res.ok) {
+        const { error } = await res.json().catch(() => ({ error: 'Lookup failed' }))
+        throw new Error(error || 'Lookup failed')
       }
+      const data: TrackingData = await res.json()
+      setTrackingData(data)
+    } catch (e: any) {
+      setError(e?.message || 'Order not found. Please check your order ID and try again.')
+    } finally {
       setLoading(false)
-    }, 1500)
+    }
   }
 
   const getStatusColor = (status: string) => {
@@ -161,7 +111,7 @@ const TrackPage: React.FC = () => {
 
           {/* Tracking Form */}
           <div className="glass-card max-w-2xl mx-auto mb-12">
-            <form onSubmit={handleTrack} className="space-y-6">
+            <form onSubmit={handleSubmit(handleTrack)} className="space-y-6">
               <div>
                 <label htmlFor="orderId" className="block text-sm font-medium text-white mb-2">
                   Order ID
@@ -169,13 +119,16 @@ const TrackPage: React.FC = () => {
                 <input
                   type="text"
                   id="orderId"
-                  value={orderId}
-                  onChange={(e) => setOrderId(e.target.value)}
+                  {...register('orderId')}
                   placeholder="e.g. DLQ-2024-089234"
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-gold/50 backdrop-blur-sm"
-                  required
                 />
               </div>
+              {errors.orderId && (
+                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3">
+                  <p className="text-red-300 text-sm">{errors.orderId.message}</p>
+                </div>
+              )}
               
               {error && (
                 <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3">
