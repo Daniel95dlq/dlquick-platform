@@ -2,10 +2,10 @@ import './globals.css';
 
 export const metadata = {
   title: 'DLQuick — From the store to your door',
-  description: 'Same-day deliveries, groceries, food, removals, and more — one platform.',
+  description: 'Ultra-fast delivery platform connecting the entire UK. Same-day deliveries, groceries, food, removals, and more — all in one place.',
   openGraph: {
-    title: 'DLQuick',
-    description: 'Same-day deliveries and more.',
+    title: 'DLQuick — From the store to your door',
+    description: 'Ultra-fast delivery platform connecting the entire UK.',
     images: ['/og.jpg']
   }
 };
