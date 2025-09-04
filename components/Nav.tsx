@@ -39,9 +39,9 @@ export default function Nav() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
               <img 
-                src="/dlq-winged-clock-logo.svg" 
-                alt="DLQuick Winged Clock Logo" 
-                className="h-14 w-auto group-hover:scale-110 transition-transform duration-300"
+                src="/dlq-premium-logo.svg" 
+                alt="DLQuick Premium Logo" 
+                className="h-14 w-auto group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_0_20px_rgba(212,175,55,0.5)]"
               />
             </div>
             <div className="hidden sm:block">

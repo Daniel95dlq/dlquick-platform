@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
               <span className="text-xl font-bold text-brand-gold">DLQuick</span>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Australia's premium logistics platform. Delivering excellence with cutting-edge technology 
+              The UK’s premium logistics platform. Delivering excellence with cutting-edge technology 
               and unmatched reliability across all services.
             </p>
           </div>
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
               © 2025 DLQuick UK Ltd. All rights reserved. | Company Registration: England & Wales
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
-              <span>�� UK Wide Service</span>
+              <span>🇬🇧 UK Wide Service</span>
               <span>⚡ 24/7 Support</span>
               <span>🛡️ Fully Insured</span>
             </div>

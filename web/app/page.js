@@ -267,7 +267,7 @@ export default function Home() {
               {isLoggedIn && userProfile ? (
                 <div className="flex items-center space-x-4">
                   <div className="text-yellow-300 text-sm">
-                    <div className="font-semibold">� {userProfile.name}</div>
+                    <div className="font-semibold">👤 {userProfile.name}</div>
                     <div className="text-yellow-200/70 text-xs">{userProfile.membership} Member</div>
                   </div>
                   <button 
@@ -349,7 +349,7 @@ export default function Home() {
               >
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12 rounded-3xl"></div>
                 <span className="relative z-10 flex items-center justify-center gap-4">
-                  � Royal Services
+                  👑 Royal Services
                 </span>
               </button>
               
@@ -575,7 +575,7 @@ export default function Home() {
                     type="submit"
                     className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 py-4 rounded-2xl text-xl font-bold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 transform hover:scale-105 shadow-lg"
                   >
-                    � Royal Login
+                    👑 Royal Login
                   </button>
                 </div>
 
