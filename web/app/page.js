@@ -4,13 +4,16 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [location, setLocation] = useState(null);
-  const [city, setCity] = useState('london'); // default
+  const [city, setCity] = useState('london'); 
   const [bgImage, setBgImage] = useState('/london-background.svg');
-  const [showServiceModal, setShowServiceModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
-  const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState('');
   const [trackingResult, setTrackingResult] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -19,21 +22,37 @@ export default function Home() {
     service: '',
     details: ''
   });
+  const [authData, setAuthData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    address: '',
+    city: '',
+    postcode: ''
+  });
+
+  // Load services data
+  useEffect(() => {
+    fetch('/content/services-complete.json')
+      .then(res => res.json())
+      .then(data => setServices(data.categories))
+      .catch(err => console.error('Error loading services:', err));
+  }, []);
 
   useEffect(() => {
-    // Get user location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const { latitude, longitude } = position.coords;
           
-          // Simple city detection based on coordinates
           const liverpoolLat = 53.4084;
           const liverpoolLng = -2.9916;
           const londonLat = 51.5074;
           const londonLng = -0.1278;
           
-          // Calculate distance to both cities
           const distanceToLiverpool = Math.sqrt(
             Math.pow(latitude - liverpoolLat, 2) + Math.pow(longitude - liverpoolLng, 2)
           );
@@ -44,31 +63,45 @@ export default function Home() {
           if (distanceToLiverpool < distanceToLondon) {
             setCity('liverpool');
             setBgImage('/liverpool-background.svg');
+            setLocation('Liverpool, UK');
           } else {
             setCity('london');
             setBgImage('/london-background.svg');
+            setLocation('London, UK');
           }
-          
-          setLocation({ latitude, longitude });
         },
         (error) => {
-          console.log('Geolocation error:', error);
-          // Default to London
+          console.error('Location error:', error);
           setCity('london');
           setBgImage('/london-background.svg');
+          setLocation('London, UK');
         }
       );
+    } else {
+      setLocation('London, UK');
     }
   }, []);
 
-  const openServiceModal = (service) => {
-    setSelectedService(service);
-    setFormData({ ...formData, service: service });
-    setShowServiceModal(true);
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const closeServiceModal = () => {
-    setShowServiceModal(false);
+  const handleAuthChange = (e) => {
+    setAuthData({
+      ...authData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Service request:', formData);
+    alert(`Thank you ${formData.name}! Your ${formData.service} request has been submitted. We'll contact you within 15 minutes.`);
+    
+    setActiveModal(null);
     setSelectedService(null);
     setFormData({
       name: '',
@@ -80,39 +113,55 @@ export default function Home() {
     });
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    // Simulate API call
-    console.log('Service request:', formData);
-    
-    // Show success message
-    alert(`Thank you ${formData.name}! Your ${formData.service} request has been submitted. We'll contact you within 15 minutes.`);
-    
-    closeServiceModal();
-  };
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+    console.log('Login attempt:', { email: authData.email });
+    // Simulate login
+    setUserProfile({
+      name: 'John Smith',
+      email: authData.email,
+      membership: 'Premium',
+      orders: 12
     });
+    setIsLoggedIn(true);
+    setActiveModal(null);
+    alert('Welcome back! You are now logged in.');
   };
 
-  const openTrackingModal = () => {
-    setShowTrackingModal(true);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (authData.password !== authData.confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+    console.log('Registration attempt:', authData);
+    // Simulate registration
+    setUserProfile({
+      name: `${authData.firstName} ${authData.lastName}`,
+      email: authData.email,
+      membership: 'Standard',
+      orders: 0
+    });
+    setIsLoggedIn(true);
+    setActiveModal(null);
+    alert('Account created successfully! Welcome to DLQuick!');
   };
 
-  const closeTrackingModal = () => {
-    setShowTrackingModal(false);
-    setTrackingNumber('');
-    setTrackingResult(null);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserProfile(null);
+    alert('You have been logged out successfully.');
+  };
+
+  const openServiceModal = (serviceName) => {
+    setSelectedService(serviceName);
+    setFormData({ ...formData, service: serviceName });
+    setActiveModal('request');
   };
 
   const handleTrackOrder = (e) => {
     e.preventDefault();
     
-    // Simulate tracking lookup
     const mockTrackingData = {
       'DLQ123456': {
         status: 'In Transit',
@@ -150,145 +199,235 @@ export default function Home() {
   };
 
   return (
-    <div>
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-lg border-b border-yellow-500/20">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            
-            {/* Logo */}
-            <a href="/" className="flex items-center space-x-2">
-              <img 
-                src="/dlq-winged-clock-logo.svg" 
-                alt="DLQuick" 
-                className="w-10 h-10" 
-              />
-              <span className="text-xl font-bold text-white">DLQuick</span>
-            </a>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Royal Blue Dynamic Background with City Image */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `linear-gradient(rgba(37, 99, 235, 0.8), rgba(29, 78, 216, 0.9)), url('${bgImage}')`,
+          zIndex: -2
+        }}
+      />
+      
+      {/* Chrome Gold Animated Gradient Overlay */}
+      <div 
+        className="fixed inset-0 opacity-70 animate-gradient"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.4) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(37, 99, 235, 0.5) 0%, transparent 50%),
+            radial-gradient(circle at 40% 60%, rgba(255, 223, 0, 0.3) 0%, transparent 50%)
+          `,
+          backgroundSize: '200% 200%',
+          zIndex: -1
+        }}
+      />
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="/services" className="text-gray-300 hover:text-white transition-colors duration-200">Services</a>
-              <a href="/partners" className="text-gray-300 hover:text-white transition-colors duration-200">Partners</a>
-              <a href="/track" className="text-gray-300 hover:text-white transition-colors duration-200">Track</a>
-              <a href="/support" className="text-gray-300 hover:text-white transition-colors duration-200">Support</a>
-              <button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-2 rounded-full font-semibold hover:from-yellow-300 hover:to-yellow-500 transition-all duration-200">
-                Get Started
+      {/* Royal Blue Header Navigation */}
+      <header className="relative z-20 bg-blue-900/20 backdrop-blur-xl border-b border-yellow-400/30">
+        <div className="container mx-auto px-6 py-4">
+          <nav className="flex items-center justify-between">
+            {/* Chrome Gold Premium Logo Section */}
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <img 
+                  src="/dlq-premium-logo.svg" 
+                  alt="DLQuick Premium Logo" 
+                  className="w-16 h-16 drop-shadow-2xl animate-glow" 
+                  style={{
+                    filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 40px rgba(255, 223, 0, 0.4))'
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/30 to-transparent rounded-full animate-pulse"></div>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent">
+                  DLQuick
+                </h1>
+                <p className="text-xs text-yellow-200/90 font-medium">⚡ Royal Delivery Platform</p>
+              </div>
+            </div>
+
+            {/* Royal Navigation Menu */}
+            <div className="flex items-center space-x-6">
+              <button 
+                onClick={() => setActiveModal('services')}
+                className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/50 text-yellow-300 hover:text-yellow-400 transition-all duration-300 font-medium px-4 py-2 rounded-xl"
+              >
+                🚚 All Services
               </button>
+              <button 
+                onClick={() => setActiveModal('tracking')}
+                className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/50 text-yellow-300 hover:text-yellow-400 transition-all duration-300 font-medium px-4 py-2 rounded-xl"
+              >
+                📱 Track Order
+              </button>
+              
+              {/* Royal User Authentication Section */}
+              {isLoggedIn && userProfile ? (
+                <div className="flex items-center space-x-4">
+                  <div className="text-yellow-300 text-sm">
+                    <div className="font-semibold">� {userProfile.name}</div>
+                    <div className="text-yellow-200/70 text-xs">{userProfile.membership} Member</div>
+                  </div>
+                  <button 
+                    onClick={handleLogout}
+                    className="bg-red-800/30 backdrop-blur-xl border border-red-400/50 text-red-300 hover:text-red-400 transition-all duration-300 font-medium px-4 py-2 rounded-xl"
+                  >
+                    🚪 Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center space-x-3">
+                  <button 
+                    onClick={() => setActiveModal('login')}
+                    className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/50 text-yellow-300 hover:text-yellow-400 transition-all duration-300 font-medium px-4 py-2 rounded-xl"
+                  >
+                    🔐 Login
+                  </button>
+                  <button 
+                    onClick={() => setActiveModal('register')}
+                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-6 py-2 rounded-xl font-bold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 shadow-lg"
+                  >
+                    ✨ Register
+                  </button>
+                </div>
+              )}
+              
+              <div className="hidden md:flex items-center space-x-2 text-yellow-200/80 text-sm">
+                <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                📍 {location || `${city.charAt(0).toUpperCase() + city.slice(1)}, UK`}
+              </div>
             </div>
-
-          </div>
+          </nav>
         </div>
-      </nav>
+      </header>
 
-      <main className="pt-16">
-        {/* Hero Section */}
-        <section 
-          className="min-h-screen bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 flex items-center justify-center relative overflow-hidden"
-          style={{
-            backgroundImage: `linear-gradient(rgba(30, 58, 138, 0.85), rgba(88, 28, 135, 0.85)), url(${bgImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundBlendMode: 'overlay'
-          }}
-        >
-          {/* City indicator */}
-          <div className="absolute top-20 right-6 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2">
-            <span className="text-white text-sm font-medium">
-              📍 {city.charAt(0).toUpperCase() + city.slice(1)}
-            </span>
-          </div>
+      {/* Premium Hero Section */}
+      <main className="relative z-10 pt-16">
+        <section className="container mx-auto px-6 py-20 text-center">
           
-          <div className="text-center max-w-4xl mx-auto px-4 relative z-10">
+          <div className="max-w-6xl mx-auto">
             
-            {/* Logo */}
-            <div className="mb-8">
+            {/* Royal Chrome Gold Logo Display */}
+            <div className="mb-16 relative">
+              <div className="absolute inset-0 bg-yellow-400/10 backdrop-blur-xl rounded-full w-56 h-56 mx-auto animate-pulse opacity-40"></div>
               <img 
-                src="/dlq-winged-clock-logo.svg" 
-                alt="DLQuick Winged Clock" 
-                className="w-32 h-32 mx-auto animate-bounce" 
+                src="/dlq-premium-logo.svg" 
+                alt="DLQuick Premium Logo" 
+                className="w-52 h-52 mx-auto relative z-10 drop-shadow-2xl animate-float" 
+                style={{
+                  filter: 'drop-shadow(0 0 50px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 100px rgba(255, 223, 0, 0.5))'
+                }}
               />
             </div>
 
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-              <span className="bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">
+            {/* Royal Hero Title */}
+            <h1 className="text-7xl md:text-9xl font-bold mb-10">
+              <span className="bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 bg-clip-text text-transparent animate-gradient block mb-6">
                 DLQuick
               </span>
-              <br />
-              <span className="text-4xl md:text-5xl text-blue-200">
-                {city === 'liverpool' ? 'Lightning fast delivery across Liverpool' : 'From the store to your door in London'}
+              <span className="text-3xl md:text-5xl bg-gradient-to-r from-yellow-200 to-yellow-100 bg-clip-text text-transparent block">
+                {city === 'liverpool' 
+                  ? '👑 Royal Express Delivery Across Liverpool' 
+                  : '⚡ Premium Royal Service - London Crown'
+                }
               </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-blue-200 mb-8">
-              Ultra-fast delivery platform connecting the entire UK. Same-day deliveries, groceries, food, removals, and more — all in one place.
+            {/* Royal Subtitle */}
+            <p className="text-2xl md:text-3xl text-yellow-100/95 mb-16 max-w-5xl mx-auto leading-relaxed">
+              The UK's most royal delivery platform. From premium dining to luxury services, 
+              executive parcels to royal removals — all delivered with crown-level excellence.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <button className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-8 py-4 rounded-full text-lg font-bold hover:from-yellow-300 hover:to-yellow-500 transform hover:scale-105 transition-all duration-200 shadow-lg">
-                🚀 Get Started Now
-              </button>
+            {/* Royal Chrome Gold CTA Section */}
+            <div className="flex flex-col lg:flex-row gap-8 justify-center items-center mb-20">
               <button 
-                onClick={openTrackingModal}
-                className="border-2 border-white/30 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/10 transition-all duration-200"
+                onClick={() => setActiveModal('services')}
+                className="group relative bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-12 py-6 rounded-3xl text-2xl font-bold hover:from-yellow-300 hover:to-yellow-400 transform hover:scale-105 transition-all duration-300 shadow-2xl min-w-[300px]"
               >
-                📱 Track Your Order
+                <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12 rounded-3xl"></div>
+                <span className="relative z-10 flex items-center justify-center gap-4">
+                  � Royal Services
+                </span>
+              </button>
+              
+              <button 
+                onClick={() => setActiveModal('tracking')}
+                className="group relative bg-blue-800/30 backdrop-blur-xl border-2 border-yellow-400/60 text-yellow-300 px-12 py-6 rounded-3xl text-2xl font-semibold hover:bg-blue-700/40 transition-all duration-300 shadow-2xl min-w-[300px]"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-yellow-300/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12 rounded-3xl"></div>
+                <span className="relative z-10 flex items-center justify-center gap-4">
+                  📱 Track Royal Order
+                </span>
               </button>
             </div>
 
-            {/* Service Icons */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Royal Service Showcase */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+              <div 
+                className="service-card p-8 cursor-pointer group bg-blue-800/30 backdrop-blur-xl rounded-3xl border border-yellow-400/30 hover:bg-blue-700/40 hover:border-yellow-400/60 transition-all duration-300 shadow-xl" 
+                onClick={() => openServiceModal('Gourmet Food Delivery')}
+              >
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🍽️</div>
+                <h3 className="text-xl font-bold text-yellow-300 mb-3">Royal Dining</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">Premium restaurants & fine dining delivered with royal treatment</p>
+                <div className="mt-4 text-yellow-400 font-bold text-lg">From £4.99</div>
+              </div>
               
-              <div className="text-center group cursor-pointer" onClick={() => openServiceModal('Grocery Delivery')}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <span className="text-2xl">🏪</span>
-                </div>
-                <h3 className="text-white font-semibold mb-2">Grocery Delivery</h3>
-                <p className="text-blue-200 text-sm">Fresh groceries in 30 minutes</p>
+              <div 
+                className="service-card p-8 cursor-pointer group bg-blue-800/30 backdrop-blur-xl rounded-3xl border border-yellow-400/30 hover:bg-blue-700/40 hover:border-yellow-400/60 transition-all duration-300 shadow-xl" 
+                onClick={() => openServiceModal('Luxury Shopping')}
+              >
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🛍️</div>
+                <h3 className="text-xl font-bold text-yellow-300 mb-3">Royal Shopping</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">Premium brands & boutique items with royal treatment</p>
+                <div className="mt-4 text-yellow-400 font-bold text-lg">From £6.99</div>
               </div>
-
-              <div className="text-center group cursor-pointer" onClick={() => openServiceModal('Food Delivery')}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <span className="text-2xl">🍕</span>
-                </div>
-                <h3 className="text-white font-semibold mb-2">Food Delivery</h3>
-                <p className="text-blue-200 text-sm">Your favorite meals delivered</p>
+              
+              <div 
+                className="service-card p-8 cursor-pointer group bg-blue-800/30 backdrop-blur-xl rounded-3xl border border-yellow-400/30 hover:bg-blue-700/40 hover:border-yellow-400/60 transition-all duration-300 shadow-xl" 
+                onClick={() => openServiceModal('Executive Parcels')}
+              >
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">📋</div>
+                <h3 className="text-xl font-bold text-yellow-300 mb-3">Royal Parcels</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">Executive parcel delivery with crown-level care</p>
+                <div className="mt-4 text-yellow-400 font-bold text-lg">From £8.99</div>
               </div>
-
-              <div className="text-center group cursor-pointer" onClick={() => openServiceModal('Same-Day Delivery')}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <span className="text-2xl">📦</span>
-                </div>
-                <h3 className="text-white font-semibold mb-2">Same-Day Delivery</h3>
-                <p className="text-blue-200 text-sm">Packages delivered today</p>
+              
+              <div 
+                className="service-card p-8 cursor-pointer group bg-blue-800/30 backdrop-blur-xl rounded-3xl border border-yellow-400/30 hover:bg-blue-700/40 hover:border-yellow-400/60 transition-all duration-300 shadow-xl" 
+                onClick={() => openServiceModal('Premium Removals')}
+              >
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">🏰</div>
+                <h3 className="text-xl font-bold text-yellow-300 mb-3">Royal Moves</h3>
+                <p className="text-blue-100 text-sm leading-relaxed">Premium moving services with royal excellence</p>
+                <div className="mt-4 text-yellow-400 font-bold text-lg">From £399</div>
               </div>
-
-              <div className="text-center group cursor-pointer" onClick={() => openServiceModal('Removals')}>
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <span className="text-2xl">🚚</span>
-                </div>
-                <h3 className="text-white font-semibold mb-2">Removals</h3>
-                <p className="text-blue-200 text-sm">Professional moving services</p>
-              </div>
-
             </div>
 
-            {/* Stats */}
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-400 mb-2">50K+</div>
-                <div className="text-blue-200">Happy Customers</div>
+            {/* Royal Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+              <div className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-10 text-center group hover:bg-blue-700/40 transition-all duration-300 shadow-xl">
+                <div className="text-6xl mb-6 group-hover:animate-bounce">👑</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-3">50K+</div>
+                <div className="text-yellow-100 text-lg font-medium">Royal Customers</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-400 mb-2">100+</div>
-                <div className="text-blue-200">UK Cities</div>
+              <div className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-10 text-center group hover:bg-blue-700/40 transition-all duration-300 shadow-xl">
+                <div className="text-6xl mb-6 group-hover:animate-bounce">🌍</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-3">200+</div>
+                <div className="text-yellow-100 text-lg font-medium">UK Cities</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-yellow-400 mb-2">24/7</div>
-                <div className="text-blue-200">Support</div>
+              <div className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-10 text-center group hover:bg-blue-700/40 transition-all duration-300 shadow-xl">
+                <div className="text-6xl mb-6 group-hover:animate-bounce">⚡</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-3">24/7</div>
+                <div className="text-yellow-100 text-lg font-medium">Royal Concierge</div>
+              </div>
+              <div className="bg-blue-800/30 backdrop-blur-xl border border-yellow-400/30 rounded-3xl p-10 text-center group hover:bg-blue-700/40 transition-all duration-300 shadow-xl">
+                <div className="text-6xl mb-6 group-hover:animate-bounce">🏆</div>
+                <div className="text-5xl font-bold text-yellow-400 mb-3">99.9%</div>
+                <div className="text-yellow-100 text-lg font-medium">Royal Satisfaction</div>
               </div>
             </div>
 
@@ -296,179 +435,441 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-b from-gray-900 to-black border-t border-yellow-500/20">
-        <div className="max-w-7xl mx-auto px-4 py-16">
+      {/* Royal Footer */}
+      <footer className="bg-blue-900/40 backdrop-blur-xl border-t border-yellow-400/30 mt-32">
+        <div className="container mx-auto px-6 py-20">
           
-          {/* Logo & Description */}
-          <div className="text-center mb-8">
-            <a href="/" className="flex items-center justify-center space-x-2 mb-4">
+          {/* Royal Logo & Description */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center space-x-6 mb-8">
               <img 
-                src="/dlq-winged-clock-logo.svg" 
-                alt="DLQuick" 
-                className="w-10 h-10" 
+                src="/dlq-premium-logo.svg" 
+                alt="DLQuick Royal" 
+                className="w-20 h-20 drop-shadow-2xl animate-glow" 
+                style={{
+                  filter: 'drop-shadow(0 0 30px rgba(255, 215, 0, 0.6))'
+                }}
               />
-              <span className="text-2xl font-bold text-white">DLQuick</span>
-            </a>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Ultra-fast delivery platform connecting the UK. From your local store to your door in record time.
+              <div>
+                <h2 className="text-4xl font-bold bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 bg-clip-text text-transparent">
+                  DLQuick Royal
+                </h2>
+                <p className="text-yellow-100 text-lg">👑 Royal Delivery Excellence</p>
+              </div>
+            </div>
+            <p className="text-blue-100 max-w-4xl mx-auto text-xl leading-relaxed">
+              The UK's most royal delivery platform. From crown-level services to premium dining, 
+              we deliver with royal excellence across Britain with unmatched grace and reliability.
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+          {/* Royal Links Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
             <div className="text-center">
-              <h3 className="text-white font-semibold mb-4">Services</h3>
-              <a href="/services/delivery" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Same-Day Delivery</a>
-              <a href="/services/groceries" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Grocery Delivery</a>
-              <a href="/services/business" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Business Services</a>
+              <h3 className="text-yellow-300 font-bold mb-8 text-xl">🚚 Royal Services</h3>
+              <div className="space-y-4">
+                <button 
+                  onClick={() => setActiveModal('services')}
+                  className="block text-blue-100 hover:text-yellow-400 transition-colors mx-auto font-medium text-lg"
+                >
+                  All Royal Services
+                </button>
+                <div className="text-blue-200">Royal Delivery</div>
+                <div className="text-blue-200">Crown Shopping</div>
+                <div className="text-blue-200">Executive Services</div>
+              </div>
             </div>
             <div className="text-center">
-              <h3 className="text-white font-semibold mb-4">Company</h3>
-              <a href="/about" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">About Us</a>
-              <a href="/partners" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Partners</a>
-              <a href="/careers" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Careers</a>
+              <h3 className="text-yellow-300 font-bold mb-8 text-xl">👑 Royal Support</h3>
+              <div className="space-y-4">
+                <button 
+                  onClick={() => setActiveModal('tracking')}
+                  className="block text-blue-100 hover:text-yellow-400 transition-colors mx-auto font-medium text-lg"
+                >
+                  Track Royal Order
+                </button>
+                <div className="text-blue-200">24/7 Royal Concierge</div>
+                <div className="text-blue-200">Crown Priority Support</div>
+                <div className="text-blue-200">Royal Helpdesk</div>
+              </div>
             </div>
             <div className="text-center">
-              <h3 className="text-white font-semibold mb-4">Support</h3>
-              <a href="/support" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Help Center</a>
-              <a href="/track" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Track Order</a>
-              <a href="/contact" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Contact Us</a>
+              <h3 className="text-yellow-300 font-bold mb-8 text-xl">🏢 Royal Company</h3>
+              <div className="space-y-4">
+                <div className="text-blue-200">About DLQuick Royal</div>
+                <div className="text-blue-200">Royal Executive Team</div>
+                <div className="text-blue-200">Press & Royal Media</div>
+                <div className="text-blue-200">Crown Partnerships</div>
+              </div>
             </div>
             <div className="text-center">
-              <h3 className="text-white font-semibold mb-4">Legal</h3>
-              <a href="/legal/terms" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Terms of Service</a>
-              <a href="/legal/privacy" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Privacy Policy</a>
-              <a href="/legal/cookies" className="block text-gray-400 hover:text-white transition-colors duration-200 mb-2">Cookies</a>
+              <h3 className="text-yellow-300 font-bold mb-8 text-xl">⚖️ Royal Legal</h3>
+              <div className="space-y-4">
+                <div className="text-blue-200">Royal Privacy Policy</div>
+                <div className="text-blue-200">Crown Terms of Service</div>
+                <div className="text-blue-200">Royal Cookie Policy</div>
+                <div className="text-blue-200">Crown GDPR Compliance</div>
+              </div>
             </div>
           </div>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-gray-400 text-sm">
-              © 2025 DLQuick. All rights reserved.
-            </p>
+          {/* Royal Bottom Bar */}
+          <div className="border-t border-yellow-400/30 pt-10 text-center">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-blue-100 text-lg mb-6 md:mb-0">
+                © 2025 DLQuick Royal Ltd. All crown rights reserved. Royal delivery excellence across the UK.
+              </p>
+              <div className="flex items-center space-x-6 text-yellow-100 text-lg">
+                <span>🌍 Available in 200+ UK Cities</span>
+                <span>⚡ Royal delivery: 25 minutes</span>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
 
-      {/* Order Tracking Modal */}
-      {showTrackingModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Track Your Order</h2>
+      {/* Royal Login Modal */}
+      {activeModal === 'login' && (
+        <div className="fixed inset-0 bg-blue-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-blue-800/90 to-blue-900/95 backdrop-blur-xl border border-yellow-400/30 rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-8">
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl font-bold text-yellow-300">🔐 Royal Welcome Back</h2>
                 <button 
-                  onClick={closeTrackingModal}
-                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                  onClick={() => setActiveModal(null)}
+                  className="text-yellow-400 hover:text-yellow-300 text-3xl font-light"
                 >
                   ×
                 </button>
               </div>
 
-              {!trackingResult ? (
-                <form onSubmit={handleTrackOrder} className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-6">
+                <div>
+                  <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={authData.email}
+                    onChange={handleAuthChange}
+                    className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="Enter your royal email"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    required
+                    value={authData.password}
+                    onChange={handleAuthChange}
+                    className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="Enter your royal password"
+                  />
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 py-4 rounded-2xl text-xl font-bold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    � Royal Login
+                  </button>
+                </div>
+
+                <div className="text-center pt-4">
+                  <p className="text-blue-200">Don't have a royal account?</p>
+                  <button
+                    type="button"
+                    onClick={() => setActiveModal('register')}
+                    className="text-yellow-400 hover:text-yellow-300 font-semibold text-lg"
+                  >
+                    Join Royal Members
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Royal Registration Modal */}
+      {activeModal === 'register' && (
+        <div className="fixed inset-0 bg-blue-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br from-blue-800/90 to-blue-900/95 backdrop-blur-xl border border-yellow-400/30 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-8">
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-3xl font-bold text-yellow-300">✨ Join Royal DLQuick</h2>
+                <button 
+                  onClick={() => setActiveModal(null)}
+                  className="text-yellow-400 hover:text-yellow-300 text-3xl font-light"
+                >
+                  ×
+                </button>
+              </div>
+
+              <form onSubmit={handleRegister} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal First Name</label>
                     <input
                       type="text"
-                      value={trackingNumber}
-                      onChange={(e) => setTrackingNumber(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                      placeholder="Enter tracking number (e.g., DLQ123456)"
+                      name="firstName"
                       required
+                      value={authData.firstName}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="Your royal first name"
                     />
                   </div>
-                  
-                  <div className="pt-4">
-                    <button
-                      type="submit"
-                      className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-4 rounded-xl font-bold hover:from-yellow-300 hover:to-yellow-500 transition-all duration-200"
-                    >
-                      📱 Track Order
-                    </button>
+
+                  <div>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Last Name</label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      required
+                      value={authData.lastName}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="Your royal last name"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Email Address</label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={authData.email}
+                    onChange={handleAuthChange}
+                    className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="your.royal.email@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    required
+                    value={authData.phone}
+                    onChange={handleAuthChange}
+                    className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="+44 7XXX XXX XXX"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    required
+                    value={authData.address}
+                    onChange={handleAuthChange}
+                    className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                    placeholder="Your royal residence address"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal City</label>
+                    <input
+                      type="text"
+                      name="city"
+                      required
+                      value={authData.city}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="London, Liverpool, etc."
+                    />
                   </div>
 
-                  <div className="text-center">
-                    <p className="text-sm text-gray-500 mb-2">Try these sample tracking numbers:</p>
-                    <div className="space-y-1">
-                      <button 
-                        type="button"
-                        onClick={() => setTrackingNumber('DLQ123456')}
-                        className="block w-full text-sm text-blue-600 hover:text-blue-800"
-                      >
-                        DLQ123456 (In Transit)
-                      </button>
-                      <button 
-                        type="button"
-                        onClick={() => setTrackingNumber('DLQ789012')}
-                        className="block w-full text-sm text-green-600 hover:text-green-800"
-                      >
-                        DLQ789012 (Delivered)
-                      </button>
-                    </div>
+                  <div>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Postcode</label>
+                    <input
+                      type="text"
+                      name="postcode"
+                      required
+                      value={authData.postcode}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="SW1A 1AA"
+                    />
                   </div>
-                </form>
-              ) : (
-                <div className="space-y-6">
-                  {/* Order Status Header */}
-                  <div className="text-center">
-                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                      trackingResult.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                      trackingResult.status === 'In Transit' ? 'bg-blue-100 text-blue-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {trackingResult.status === 'Delivered' ? '✅' : 
-                       trackingResult.status === 'In Transit' ? '🚚' : '❌'} {trackingResult.status}
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mt-2">Order #{trackingNumber}</h3>
-                    <p className="text-gray-600">{trackingResult.location}</p>
-                    <p className="text-sm text-gray-500">Estimated delivery: {trackingResult.estimatedDelivery}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Royal Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      required
+                      value={authData.password}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="Create a royal password"
+                    />
                   </div>
 
-                  {/* Progress Bar */}
-                  {trackingResult.progress > 0 && (
-                    <div>
-                      <div className="flex justify-between text-sm text-gray-600 mb-2">
-                        <span>Progress</span>
-                        <span>{trackingResult.progress}%</span>
+                  <div>
+                    <label className="block text-lg font-semibold text-yellow-100 mb-2">Confirm Royal Password</label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      required
+                      value={authData.confirmPassword}
+                      onChange={handleAuthChange}
+                      className="w-full px-6 py-4 bg-blue-800/30 border border-yellow-400/30 rounded-2xl text-lg text-yellow-100 placeholder-blue-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400"
+                      placeholder="Confirm your royal password"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-6">
+                  <button
+                    type="submit"
+                    className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 py-4 rounded-2xl text-xl font-bold hover:from-yellow-300 hover:to-yellow-400 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    👑 Create Royal Account
+                  </button>
+                </div>
+
+                <div className="text-center pt-4">
+                  <p className="text-blue-200">Already have a royal account?</p>
+                  <button
+                    type="button"
+                    onClick={() => setActiveModal('login')}
+                    className="text-yellow-400 hover:text-yellow-300 font-semibold text-lg"
+                  >
+                    Royal Login Here
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complete Services Modal with All Categories */}
+      {activeModal === 'services' && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h2 className="text-3xl font-bold text-gray-900">🚚 Premium Service Catalog</h2>
+                <button 
+                  onClick={() => setActiveModal(null)}
+                  className="text-gray-500 hover:text-gray-700 text-3xl font-light"
+                >
+                  ×
+                </button>
+              </div>
+              
+              {/* Category Filter Tabs */}
+              <div className="mt-6 flex flex-wrap gap-3">
+                <button
+                  onClick={() => setSelectedCategory('all')}
+                  className={`tab-button ${selectedCategory === 'all' ? 'active' : ''}`}
+                >
+                  🌟 All Services
+                </button>
+                {services.map(category => (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`tab-button ${selectedCategory === category.id ? 'active' : ''}`}
+                  >
+                    {category.icon} {category.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+              {/* Service Categories with Photos */}
+              {services
+                .filter(category => selectedCategory === 'all' || category.id === selectedCategory)
+                .map(category => (
+                <div key={category.id} className="mb-12">
+                  <div className="flex items-center mb-6">
+                    <div className="relative">
+                      {category.image && (
+                        <img 
+                          src={category.image} 
+                          alt={category.name}
+                          className="w-20 h-20 rounded-2xl object-cover shadow-xl"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      )}
+                      <div className="absolute -bottom-2 -right-2 text-3xl bg-white rounded-full p-2 shadow-lg">
+                        {category.icon}
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3">
-                        <div 
-                          className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-3 rounded-full transition-all duration-300"
-                          style={{ width: `${trackingResult.progress}%` }}
-                        ></div>
-                      </div>
                     </div>
-                  )}
+                    <div className="ml-6">
+                      <h3 className="text-3xl font-bold text-gray-900 mb-2">{category.name}</h3>
+                      <p className="text-gray-600 text-lg">{category.description}</p>
+                    </div>
+                  </div>
 
-                  {/* Tracking Updates */}
-                  {trackingResult.updates.length > 0 && (
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Tracking Updates</h4>
-                      <div className="space-y-3">
-                        {trackingResult.updates.map((update, index) => (
-                          <div key={index} className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div>
-                              <p className="text-sm font-medium text-gray-900">{update.status}</p>
-                              <p className="text-xs text-gray-500">{update.time} - {update.location}</p>
-                            </div>
+                  {/* Service Cards Grid with All Services */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {category.services && category.services.map(service => (
+                      <div key={service.id} className="service-card p-6 bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="text-4xl">{service.icon}</div>
+                          <div className="text-right">
+                            <div className="text-xl font-bold text-yellow-600">{service.pricing}</div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+                        </div>
 
-                  <div className="pt-4 space-y-2">
-                    <button
-                      onClick={() => setTrackingResult(null)}
-                      className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-all duration-200"
-                    >
-                      Track Another Order
-                    </button>
+                        <h4 className="text-xl font-bold text-gray-900 mb-3">{service.name}</h4>
+                        <p className="text-gray-600 mb-4 leading-relaxed">{service.description}</p>
+
+                        {/* Features List */}
+                        <div className="space-y-2 mb-6">
+                          {service.features && service.features.map((feature, index) => (
+                            <div key={index} className="flex items-center text-sm text-gray-700">
+                              <svg className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                              {feature}
+                            </div>
+                          ))}
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setSelectedService(service.name);
+                            setFormData({ ...formData, service: service.name });
+                            setActiveModal('request');
+                          }}
+                          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-4 rounded-xl font-bold hover:from-yellow-300 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                        >
+                          🚀 Request {service.name}
+                        </button>
+                      </div>
+                    ))}
                   </div>
+                </div>
+              ))}
+
+              {/* Loading state */}
+              {services.length === 0 && (
+                <div className="text-center py-16">
+                  <div className="text-8xl mb-6">🚚</div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Loading Premium Service Catalog...</h3>
+                  <p className="text-gray-600 text-lg">Please wait while we load all categories and services.</p>
                 </div>
               )}
             </div>
@@ -477,14 +878,14 @@ export default function Home() {
       )}
 
       {/* Service Request Modal */}
-      {showServiceModal && (
+      {activeModal === 'request' && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Request {selectedService}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">🚀 Request {selectedService}</h2>
                 <button 
-                  onClick={closeServiceModal}
+                  onClick={() => setActiveModal(null)}
                   className="text-gray-500 hover:text-gray-700 text-2xl"
                 >
                   ×
@@ -570,6 +971,130 @@ export default function Home() {
                   We'll contact you within 15 minutes to confirm your order
                 </p>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Order Tracking Modal */}
+      {activeModal === 'tracking' && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">📱 Track Your Order</h2>
+                <button 
+                  onClick={() => setActiveModal(null)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+
+              {!trackingResult ? (
+                <form onSubmit={handleTrackOrder} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Tracking Number</label>
+                    <input
+                      type="text"
+                      value={trackingNumber}
+                      onChange={(e) => setTrackingNumber(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                      placeholder="Enter tracking number (e.g., DLQ123456)"
+                      required
+                    />
+                  </div>
+                  
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-black py-4 rounded-xl font-bold hover:from-yellow-300 hover:to-yellow-500 transition-all duration-200"
+                    >
+                      📱 Track Order
+                    </button>
+                  </div>
+
+                  <div className="text-center">
+                    <p className="text-sm text-gray-500 mb-2">Try these sample tracking numbers:</p>
+                    <div className="space-y-1">
+                      <button 
+                        type="button"
+                        onClick={() => setTrackingNumber('DLQ123456')}
+                        className="block w-full text-sm text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        DLQ123456 (In Transit)
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setTrackingNumber('DLQ789012')}
+                        className="block w-full text-sm text-green-600 hover:text-green-800 font-medium"
+                      >
+                        DLQ789012 (Delivered)
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              ) : (
+                <div className="space-y-6">
+                  {/* Order Status Header */}
+                  <div className="text-center">
+                    <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                      trackingResult.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                      trackingResult.status === 'In Transit' ? 'bg-blue-100 text-blue-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {trackingResult.status === 'Delivered' ? '✅' : 
+                       trackingResult.status === 'In Transit' ? '🚚' : '❌'} {trackingResult.status}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mt-2">Order #{trackingNumber}</h3>
+                    <p className="text-gray-600">{trackingResult.location}</p>
+                    <p className="text-sm text-gray-500">Estimated delivery: {trackingResult.estimatedDelivery}</p>
+                  </div>
+
+                  {/* Progress Bar */}
+                  {trackingResult.progress > 0 && (
+                    <div>
+                      <div className="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>Progress</span>
+                        <span>{trackingResult.progress}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className="bg-gradient-to-r from-yellow-400 to-yellow-600 h-3 rounded-full transition-all duration-300"
+                          style={{ width: `${trackingResult.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tracking Updates */}
+                  {trackingResult.updates && trackingResult.updates.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3">Tracking Updates</h4>
+                      <div className="space-y-3">
+                        {trackingResult.updates.map((update, index) => (
+                          <div key={index} className="flex items-start space-x-3">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">{update.status}</p>
+                              <p className="text-xs text-gray-500">{update.time} - {update.location}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="pt-4 space-y-2">
+                    <button
+                      onClick={() => setTrackingResult(null)}
+                      className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-all duration-200"
+                    >
+                      Track Another Order
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
