@@ -8,6 +8,8 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // directUrl is optional; when present, Prisma will use it for direct connections (e.g., migrations)
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -160,4 +162,24 @@ enum PriceType {
   PER_HOUR
   PER_ITEM
   QUOTE
+}
+
+model QuoteRequest {
+  id           String   @id @default(cuid())
+  serviceSlug  String
+  serviceTitle String
+  name         String
+  email        String
+  phone        String
+  payload      Json
+  status       QuoteStatus @default(NEW)
+  createdAt    DateTime @default(now())
+}
+
+enum QuoteStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  WON
+  LOST
 }

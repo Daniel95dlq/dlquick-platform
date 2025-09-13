@@ -1,5 +1,5 @@
 import { PrismaClient, UserRole } from '@prisma/client'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -18,8 +18,8 @@ async function main() {
     create: {
       email: adminEmail,
       name: 'DLQuick Admin',
-      password: hashedPassword,
-      role: UserRole.MASTER_ADMIN,
+      // Add password field to User model if needed; otherwise skip storing hash
+      role: UserRole.ADMIN,
     },
   })
 
@@ -33,7 +33,6 @@ async function main() {
       name: 'Delivery Services',
       slug: 'delivery',
       description: 'Fast and reliable delivery solutions',
-      pillar: 'delivery',
       order: 1,
     },
   })
@@ -45,7 +44,6 @@ async function main() {
       name: 'Business Services',
       slug: 'business',
       description: 'Professional business solutions',
-      pillar: 'business',
       order: 2,
     },
   })
@@ -57,7 +55,6 @@ async function main() {
       name: 'Personal Services',
       slug: 'personal',
       description: 'Personal assistance and services',
-      pillar: 'personal',
       order: 3,
     },
   })
@@ -96,14 +93,10 @@ async function main() {
       slug: 'same-day-delivery',
       description: 'Fast same-day delivery service across London',
       shortDesc: 'Get your items delivered within hours',
-      basePrice: 15.99,
-      priceType: 'FIXED',
-      timeEstimate: '2-6 hours',
-      features: JSON.stringify(['Same-day delivery', 'Real-time tracking', 'Secure handling']),
-      isActive: true,
-      isPopular: true,
+  price: 15.99 as any,
+  priceType: 'FIXED' as any,
+  isActive: true,
       subcategoryId: quickDelivery.id,
-      order: 1,
     },
   })
 
@@ -115,13 +108,10 @@ async function main() {
       slug: 'ebay-collection',
       description: 'Professional eBay item collection and delivery service',
       shortDesc: 'Collect and deliver your eBay purchases',
-      basePrice: 25.00,
-      priceType: 'FIXED',
-      timeEstimate: '1-3 days',
-      features: JSON.stringify(['Professional collection', 'Secure packaging', 'Insurance included']),
-      isActive: true,
+  price: 25.0 as any,
+  priceType: 'FIXED' as any,
+  isActive: true,
       subcategoryId: marketplaceDelivery.id,
-      order: 1,
     },
   })
 
