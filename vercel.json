@@ -1,7 +1,20 @@
 {
-  "installCommand": "npm ci",
+  "installCommand": "npm ci || npm install",
   "buildCommand": "npm run vercel-build",
-  "regions": ["iad", "cdg"],
+  "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ],
   "git": {
     "deploymentEnabled": {
       "main": true
