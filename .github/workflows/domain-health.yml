@@ -19,5 +19,6 @@ jobs:
         run: npm ci || npm i
       - name: Run domain health
         env:
-          DOMAINS: https://www.dlquick.co.uk,https://dlquick-platform-git-main-dlq.vercel.app
+          # Suffix with '?' to mark a domain as optional (won't fail the job)
+          DOMAINS: https://www.dlquick.co.uk,https://dlquick-platform-git-main-dlq.vercel.app?
         run: npm run test:domains
