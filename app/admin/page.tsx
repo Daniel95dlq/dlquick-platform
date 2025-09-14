@@ -89,70 +89,83 @@ export default async function AdminIndex({ searchParams }: { searchParams?: Reco
           <a className={`underline ${range === '24h' ? 'font-semibold' : ''}`} href="/admin?range=24h">Last 24h</a>
         </div>
       </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-  <div className="border border-white/10 rounded p-4"><div className="text-sm opacity-70">Quotes {range === '24h' && <span className='ml-1'>(24h)</span>}</div><div className="text-2xl font-semibold">{quotes}</div></div>
-  <div className="border border-white/10 rounded p-4"><div className="text-sm opacity-70">New quotes {range === '24h' && <span className='ml-1'>(24h)</span>}</div><div className="text-2xl font-semibold">{newQuotes}</div></div>
-  <div className="border border-white/10 rounded p-4"><div className="text-sm opacity-70">Partners {range === '24h' && <span className='ml-1'>(24h)</span>}</div><div className="text-2xl font-semibold">{partners}</div></div>
-  <div className="border border-white/10 rounded p-4"><div className="text-sm opacity-70">New partners {range === '24h' && <span className='ml-1'>(24h)</span>}</div><div className="text-2xl font-semibold">{newPartners}</div></div>
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 p-4">
+          <div className="text-sm opacity-70">Quotes {range === '24h' && <span className='ml-1'>(24h)</span>}</div>
+          <div className="text-2xl font-semibold">{quotes}</div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 p-4">
+          <div className="text-sm opacity-70">New quotes {range === '24h' && <span className='ml-1'>(24h)</span>}</div>
+          <div className="text-2xl font-semibold">{newQuotes}</div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 p-4">
+          <div className="text-sm opacity-70">Partners {range === '24h' && <span className='ml-1'>(24h)</span>}</div>
+          <div className="text-2xl font-semibold">{partners}</div>
+        </div>
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 p-4">
+          <div className="text-sm opacity-70">New partners {range === '24h' && <span className='ml-1'>(24h)</span>}</div>
+          <div className="text-2xl font-semibold">{newPartners}</div>
+        </div>
       </div>
 
       {/* Per-status mini cards */}
       <div className="grid gap-4 md:grid-cols-2 mb-8">
-        <div className="border border-white/10 rounded">
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <h2 className="font-medium">Quotes by status</h2>
             <a className="text-sm underline" href="/admin/quotes">Manage</a>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 p-4 text-sm">
-            <a href="/admin/quotes?status=NEW" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/quotes?status=NEW" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">NEW</div>
               <div className="text-xl font-semibold">{qNEW}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/quotes/export?status=NEW&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/quotes?status=CONTACTED" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/quotes?status=CONTACTED" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">CONTACTED</div>
               <div className="text-xl font-semibold">{qCONTACTED}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/quotes/export?status=CONTACTED&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/quotes?status=QUOTED" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/quotes?status=QUOTED" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">QUOTED</div>
               <div className="text-xl font-semibold">{qQUOTED}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/quotes/export?status=QUOTED&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/quotes?status=WON" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/quotes?status=WON" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">WON</div>
               <div className="text-xl font-semibold">{qWON}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/quotes/export?status=WON&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/quotes?status=LOST" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/quotes?status=LOST" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">LOST</div>
               <div className="text-xl font-semibold">{qLOST}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/quotes/export?status=LOST&limit=1000">Export</a></div>
             </a>
           </div>
         </div>
-        <div className="border border-white/10 rounded">
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <h2 className="font-medium">Partner applications by status</h2>
             <a className="text-sm underline" href="/admin/partners">Manage</a>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 text-sm">
-            <a href="/admin/partners?status=NEW" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/partners?status=NEW" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">NEW</div>
               <div className="text-xl font-semibold">{pNEW}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/partners/export?status=NEW&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/partners?status=REVIEWING" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/partners?status=REVIEWING" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">REVIEWING</div>
               <div className="text-xl font-semibold">{pREVIEWING}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/partners/export?status=REVIEWING&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/partners?status=APPROVED" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/partners?status=APPROVED" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">APPROVED</div>
               <div className="text-xl font-semibold">{pAPPROVED}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/partners/export?status=APPROVED&limit=1000">Export</a></div>
             </a>
-            <a href="/admin/partners?status=REJECTED" className="border border-white/10 rounded p-3 hover:bg-white/5">
+            <a href="/admin/partners?status=REJECTED" className="rounded border border-white/10 p-3 bg-white/5 hover:bg-white/10 backdrop-blur-sm supports-[backdrop-filter]:bg-white/7">
               <div className="opacity-70">REJECTED</div>
               <div className="text-xl font-semibold">{pREJECTED}</div>
               <div className="mt-1 text-xs"><a className="underline" href="/admin/partners/export?status=REJECTED&limit=1000">Export</a></div>
@@ -162,7 +175,7 @@ export default async function AdminIndex({ searchParams }: { searchParams?: Reco
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 mb-8">
-        <div className="border border-white/10 rounded">
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <h2 className="font-medium">Latest Quotes</h2>
             <div className="flex items-center gap-3">
@@ -179,7 +192,7 @@ export default async function AdminIndex({ searchParams }: { searchParams?: Reco
           }))} />
         </div>
 
-        <div className="border border-white/10 rounded">
+        <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <h2 className="font-medium">Latest Partner Applications</h2>
             <div className="flex items-center gap-3">
@@ -199,7 +212,7 @@ export default async function AdminIndex({ searchParams }: { searchParams?: Reco
       </div>
 
       {/* Recent activity */}
-      <div className="border border-white/10 rounded mb-8">
+      <div className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 mb-8">
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
           <h2 className="font-medium">Recent activity</h2>
           <div className="text-xs opacity-70">Last {recent.length} updates</div>
@@ -222,11 +235,11 @@ export default async function AdminIndex({ searchParams }: { searchParams?: Reco
       </div>
 
       <ul className="list-disc pl-6 space-y-2">
-  <li><a className="underline" href="/admin/quotes">Quotes</a></li>
-  <li><a className="underline" href="/admin/partners">Partner Applications</a></li>
-  <li><a className="underline" href="/admin/consents">Cookie Consents</a></li>
-  <li><a className="underline" href="/admin/dsar">DSAR Requests</a></li>
-  <li><a className="underline" href="/admin/reviews">Reviews</a></li>
+        <li><a className="underline" href="/admin/quotes">Quotes</a></li>
+        <li><a className="underline" href="/admin/partners">Partner Applications</a></li>
+        <li><a className="underline" href="/admin/consents">Cookie Consents</a></li>
+        <li><a className="underline" href="/admin/dsar">DSAR Requests</a></li>
+        <li><a className="underline" href="/admin/reviews">Reviews</a></li>
       </ul>
     </div>
   )

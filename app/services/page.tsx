@@ -7,11 +7,11 @@ export default function ServicesPage() {
   <p className="text-gray-200 mb-8">Explore our full suite of services tailored to your needs.</p>
       <div className="space-y-8">
         {pillars.map((pillar) => (
-          <section key={pillar} className="border border-dlq-gold/30 rounded-lg bg-[#0f2238] p-5">
+          <section key={pillar} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 supports-[backdrop-filter]:backdrop-blur-xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.08)]">
             <h2 className="text-2xl font-semibold text-dlq-gold mb-2">{pillar}</h2>
             <div className="grid md:grid-cols-2 gap-4">
               {getServicesByPillar(pillar).map((s) => (
-                <div key={s.slug} className="border border-dlq-gold/20 rounded-lg p-4 hover:bg-white/5 transition">
+                <div key={s.slug} className="rounded-lg border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 supports-[backdrop-filter]:backdrop-blur-xl p-4 transition hover:shadow-[0_12px_40px_rgba(0,0,0,0.16)]">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-medium text-gray-100">{s.title}</h3>
                     {s.tags && (

@@ -76,22 +76,22 @@ export default function ExplorePage() {
     <div>
       {/* Hero with gradient overlay. Add city/category backgrounds later under /public/assets/backgrounds. */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#08132a] via-[#0a1a4f] to-[#08132a] opacity-95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#08132a]/70 via-[#0a1a4f]/70 to-[#08132a]/70" />
         <div className="relative mx-auto max-w-6xl px-4 py-10 text-gray-100">
           <h1 className="text-3xl md:text-4xl font-semibold text-dlq-gold">Explore DLQuick</h1>
           <p className="opacity-80 mt-1">Search everything in one place: deliveries, removals, trades, pets, events and more.</p>
           <div className="mt-6 flex gap-2">
             <input value={q} onChange={(e) => { setLimit(10); setQ(e.target.value) }} placeholder="Search services, categories…"
-                   className="flex-1 border border-dlq-gold/40 bg-[#0f2238] text-gray-100 placeholder:text-gray-400 rounded px-4 py-2" />
+                   className="flex-1 rounded border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 text-gray-100 placeholder:text-gray-300 px-4 py-2" />
             <button onClick={startVoice} disabled={listening}
-                    className="text-xs px-3 py-2 rounded border border-dlq-gold text-dlq-gold disabled:opacity-50">
+                    className="text-xs px-3 py-2 rounded border border-dlq-gold text-dlq-gold disabled:opacity-50 backdrop-blur-sm">
               {listening ? 'Listening…' : 'Voice'}
             </button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {FILTER_CHIPS.map((c) => (
               <button key={c} onClick={() => toggleChip(c)}
-                      className={`text-[11px] px-2 py-1 rounded-full border ${active.includes(c) ? 'bg-dlq-gold text-[#0a1a4f] border-dlq-gold' : 'bg-dlq-gold/10 text-dlq-gold border-dlq-gold/30'}`}>
+                      className={`text-[11px] px-2 py-1 rounded-full border ${active.includes(c) ? 'bg-dlq-gold text-[#0a1a4f] border-dlq-gold' : 'border-white/10 bg-white/5 text-dlq-gold'}`}>
                 {c}
               </button>
             ))}
@@ -102,9 +102,9 @@ export default function ExplorePage() {
       {/* Category accordions */}
       <section className="mx-auto max-w-6xl px-4 py-6">
         <h2 className="text-xl font-medium text-dlq-gold mb-2">Browse by category</h2>
-        <div className="space-y-2">
+    <div className="space-y-2">
           {pillars.map((p) => (
-            <details key={p} className="group border border-dlq-gold/20 rounded bg-[#0f2238]">
+      <details key={p} className="group rounded border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7">
               <summary className="cursor-pointer list-none p-3 flex items-center justify-between">
                 <span className="text-gray-100">{p}</span>
                 <span className="text-xs text-dlq-gold/80">{groupedByPillar[p].length} result{groupedByPillar[p].length === 1 ? '' : 's'}</span>
@@ -137,7 +137,7 @@ export default function ExplorePage() {
 
 function ServiceCard({ s }: { s: Service }) {
   return (
-    <div className="border border-dlq-gold/20 rounded p-4 bg-[#0f2238] hover:bg-white/5 transition">
+  <div className="rounded border border-white/10 bg-white/5 backdrop-blur-md supports-[backdrop-filter]:bg-white/7 p-4 transition hover:shadow-[0_12px_40px_rgba(0,0,0,0.16)]">
       <div className="flex items-center justify-between">
         <h3 className="font-medium text-gray-100">{s.title}</h3>
         {s.tags && (
