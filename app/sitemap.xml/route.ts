@@ -5,7 +5,7 @@ export function GET(req: NextRequest) {
   const proto = req.headers.get('x-forwarded-proto') || 'https'
   const inferred = hdr ? `${proto}://${hdr}` : undefined
   const base = process.env.NEXT_PUBLIC_APP_URL || inferred || 'https://www.dlquick.co.uk'
-  const urls = ['/', '/services', '/partners', '/privacy', '/terms']
+  const urls = ['/', '/services', '/partners', '/privacy', '/terms', '/overview']
   const items = urls
     .map((u) => `<url><loc>${base}${u}</loc><changefreq>weekly</changefreq></url>`) 
     .join('')

@@ -26,7 +26,8 @@ export function middleware(req: NextRequest) {
   ])
   const host = req.headers.get('host') || ''
   const isLocal = host.startsWith('localhost') || host.startsWith('127.0.0.1')
-  const isAllowed = allowedHosts.has(host)
+  const isVercelPreview = host.endsWith('.vercel.app') && host.includes('dlquick-platform')
+  const isAllowed = allowedHosts.has(host) || isVercelPreview
 
   // Redirect naked/apex to www in production for dlquick.co.uk
   if (!isLocal && host === 'dlquick.co.uk') {
