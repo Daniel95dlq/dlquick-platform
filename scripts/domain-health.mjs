@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fetch from 'node-fetch';
+// Uses global fetch (Node 18+). No external deps required.
 
 const domains = (process.env.DOMAINS || 'https://www.dlquick.co.uk,https://dlquick-platform-git-main-dlq.vercel.app')
   .split(',')
