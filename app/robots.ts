@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://www.dlquick.co.uk'
   const disallow = [
     '/DLQuick_Web_Platform_and_Legal_Pack.pdf',
     '/DLQuick_Web_Platform_and_Extra_Bomb_Pack.pdf',
@@ -16,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow,
       },
     ],
-  sitemap: (process.env.NEXT_PUBLIC_APP_URL || 'https://www.dlquick.co.uk') + '/sitemap.xml',
+    sitemap: `${base}/sitemap.xml`,
+    host: base.replace(/^https?:\/\//, ''),
   }
 }
