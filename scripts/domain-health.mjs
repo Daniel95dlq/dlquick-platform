@@ -19,6 +19,14 @@ async function safeJson(res) {
   } catch (_) {}
   return null
 }
+async function sampleText(res, max = 160) {
+  try {
+    const t = await res.text()
+    return t.slice(0, max)
+  } catch (_) {
+    return null
+  }
+}
 
 async function check(target) {
   const { url, optional } = target
@@ -30,6 +38,8 @@ async function check(target) {
     const host = await fetch(new URL('/api/host', url), { signal: controller.signal, redirect: 'follow' })
     const healthBody = await safeJson(health)
     const hostBody = await safeJson(host)
+    const hostSample = hostBody ? null : await sampleText(host)
+    const robotsSample = robots.ok ? null : await sampleText(robots)
     return {
       url,
       optional,
@@ -40,10 +50,13 @@ async function check(target) {
       robotsOk: robots.ok,
       robotsStatus: robots.status,
       robotsType: ct(robots),
+      robotsSample,
       hostOk: host.ok,
       hostStatus: host.status,
       hostType: ct(host),
       host: hostBody,
+      hostReason: hostBody ? null : (ct(host).includes('application/json') ? 'invalid-json' : 'non-json'),
+      hostSample,
     }
   } catch (e) {
     return { url, optional, error: e.message || String(e) }
