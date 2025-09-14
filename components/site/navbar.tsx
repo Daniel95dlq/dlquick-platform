@@ -10,7 +10,6 @@ export default function Navbar() {
         </a>
         <nav className="hidden md:flex items-center gap-6 text-sm text-dlq-gold">
           <a href="/explore" className="hover:opacity-90">Explore</a>
-          <a href="/overview" className="hover:opacity-90">Overview</a>
           <a href="/partners/drivers" className="hover:opacity-90">Drivers</a>
           <a href="/partners/merchants" className="hover:opacity-90">Merchants</a>
           <a href="/register" className="hover:opacity-90">Register</a>
