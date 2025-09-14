@@ -4,7 +4,16 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { color-scheme: dark; }
-body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0a1a4f; }
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	color: rgb(243 244 246);
+	/* Deep navy base with soft gold-tinted radial fog and a subtle grain */
+	background:
+		radial-gradient(circle at 20% 15%, rgba(212, 175, 55, 0.08), transparent 45%),
+		radial-gradient(circle at 80% 85%, rgba(212, 175, 55, 0.06), transparent 45%),
+		linear-gradient(180deg, #081335 0%, #0a1a4f 40%, #0b1b2e 100%);
+	background-attachment: fixed;
+}
 
 /* Gold links on navy */
 a { color: #D4AF37; }

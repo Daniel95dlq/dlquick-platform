@@ -7,7 +7,7 @@ import CookieBanner from "../components/site/cookie-banner"
 export default function RootLayout({ children }: { children: any }) {
 	return (
 		<html lang="en" className={brandFont.className}>
-			<body className="bg-[#0b1b2e] text-gray-100">
+			<body className="bg-transparent text-gray-100">
 				<Navbar />
 				<main className="min-h-[calc(100vh-56px)]">
 					{children}

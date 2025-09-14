@@ -2,7 +2,7 @@ import BrandLogo from "./brand-logo"
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b bg-dlq-navy/80 backdrop-blur supports-[backdrop-filter]:bg-dlq-navy/70 text-dlq-gold">
+  <header className="sticky top-0 z-50 border-b border-white/10 bg-dlq-navy/70 backdrop-blur supports-[backdrop-filter]:bg-dlq-navy/60 text-dlq-gold shadow-[0_6px_20px_rgba(0,0,0,0.2)]">
       <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 group">
           <BrandLogo className="w-7 h-7" fill="#D4AF37" />
