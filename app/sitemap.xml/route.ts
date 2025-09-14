@@ -1,7 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export function GET() {
-  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://www.dlquick.co.uk'
+export function GET(req: NextRequest) {
+  const hdr = req.headers.get('x-forwarded-host') || req.headers.get('host')
+  const proto = req.headers.get('x-forwarded-proto') || 'https'
+  const inferred = hdr ? `${proto}://${hdr}` : undefined
+  const base = process.env.NEXT_PUBLIC_APP_URL || inferred || 'https://www.dlquick.co.uk'
   const urls = ['/', '/services', '/partners', '/privacy', '/terms']
   const items = urls
     .map((u) => `<url><loc>${base}${u}</loc><changefreq>weekly</changefreq></url>`) 

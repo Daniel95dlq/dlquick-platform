@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: any }) {
 }
 
 export const metadata = {
-	metadataBase: new URL('https://dlquick.co.uk'),
+	metadataBase: new URL('https://www.dlquick.co.uk'),
 	title: {
 		default: 'DLQuick — The Ultimate Local App',
 		template: '%s | DLQuick',

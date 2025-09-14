@@ -3,10 +3,13 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "./prisma"
-import { UserRole } from "@prisma/client"
+// Avoid importing Prisma enums in runtime code to keep builds robust across client versions
+export type AppUserRole = 'USER' | 'AGENT' | 'BUSINESS' | 'ADMIN'
 import { redirect } from "next/navigation"
 
 export const authOptions: NextAuthOptions = {
+  // Ensure a stable secret in production
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
@@ -35,12 +38,12 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        if (credentials.password === "admin123" && user.role === UserRole.ADMIN) {
+    if (credentials.password === "admin123" && (user as any).role === 'ADMIN') {
           return {
             id: user.id,
             email: user.email,
             name: user.name,
-            role: user.role,
+      role: (user as any).role,
           } as any
         }
 
@@ -70,14 +73,14 @@ export const authOptions: NextAuthOptions = {
   },
 }
 
-export async function requireAuth(requiredRole?: UserRole) {
+export async function requireAuth(requiredRole?: AppUserRole) {
   const session = await getServerSession(authOptions)
   
   if (!session?.user) {
     redirect('/auth/signin')
   }
   
-  if (requiredRole && (session.user as any).role !== requiredRole && (session.user as any).role !== UserRole.ADMIN) {
+  if (requiredRole && (session.user as any).role !== requiredRole && (session.user as any).role !== 'ADMIN') {
     redirect('/unauthorized')
   }
   

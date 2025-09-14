@@ -16,6 +16,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow,
       },
     ],
-    sitemap: 'https://dlquick.co.uk/sitemap.xml',
+  sitemap: (process.env.NEXT_PUBLIC_APP_URL || 'https://www.dlquick.co.uk') + '/sitemap.xml',
   }
 }
