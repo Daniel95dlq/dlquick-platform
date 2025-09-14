@@ -40,3 +40,4 @@ export const config = {
   '/((?!api|_next/static|_next/image|favicon.ico|icon.svg|opengraph-image|robots.txt|sitemap.xml).*)',
   ],
 }
+// Note: Keeping API and robots/sitemap fully excluded avoids accidental interception in Vercel.
