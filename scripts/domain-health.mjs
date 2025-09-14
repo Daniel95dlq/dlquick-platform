@@ -65,8 +65,44 @@ async function check(target) {
   }
 }
 
+async function getVersion(url, signal) {
+  try {
+    const res = await fetch(new URL('/api/version', url), { signal, redirect: 'follow' })
+    if (!res.ok) return null
+    const type = res.headers.get('content-type') || ''
+    if (!type.includes('application/json')) return null
+    const body = await res.json().catch(()=>null)
+    return body && typeof body.version === 'string' ? body.version : null
+  } catch (_) {
+    return null
+  }
+}
+
+async function checkWithRetry(target) {
+  const maxAttempts = Number(process.env.DH_ATTEMPTS || 10)
+  const delayMs = Number(process.env.DH_DELAY_MS || 6000)
+  const expectSha = (process.env.GITHUB_SHA || '').slice(0, 7)
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const result = await check(target)
+    const passed = result.optional ? true : (result.healthOk && result.robotsOk && result.hostOk)
+    if (passed) return { ...result, attempts: attempt }
+    // If we expect a specific deploy, wait until /api/version matches the commit before failing
+    const controller = new AbortController()
+    const t = setTimeout(()=>controller.abort(), timeoutMs)
+    const ver = await getVersion(result.url, controller.signal)
+    clearTimeout(t)
+    const versionMatches = ver && expectSha && ver.startsWith(expectSha)
+    const shouldRetry = !result.optional && (!ver || !versionMatches || result.robotsStatus === 404 || result.hostStatus === 404)
+    if (attempt < maxAttempts && shouldRetry) {
+      await new Promise(r => setTimeout(r, delayMs))
+      continue
+    }
+    return { ...result, attempts: attempt, version: ver, expect: expectSha || null }
+  }
+}
+
 ;(async()=>{
-  const results = await Promise.all(domains.map(check))
+  const results = await Promise.all(domains.map(checkWithRetry))
   const ok = results.every(r => r.optional ? true : (r.healthOk && r.robotsOk && r.hostOk))
   console.log(JSON.stringify({ ok, results }, null, 2))
   if (!ok) process.exit(1)

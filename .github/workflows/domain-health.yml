@@ -21,4 +21,7 @@ jobs:
         env:
           # Suffix with '?' to mark a domain as optional (won't fail the job)
           DOMAINS: https://www.dlquick.co.uk,https://dlquick-platform-git-main-dlq.vercel.app?
+          GITHUB_SHA: ${{ github.sha }}
+          DH_ATTEMPTS: '15'
+          DH_DELAY_MS: '5000'
         run: npm run test:domains
