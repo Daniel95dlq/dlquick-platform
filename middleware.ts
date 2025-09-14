@@ -47,7 +47,7 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Run on all paths except Next internals and common static assets
-    '/((?!_next/static|_next/image|favicon.ico|icon.svg|opengraph-image|robots.txt|sitemap.xml).*)',
+  // Run on all paths except Next internals and heavy static assets
+  '/((?!_next/static|_next/image|favicon.ico|icon.svg|opengraph-image).*)',
   ],
 }

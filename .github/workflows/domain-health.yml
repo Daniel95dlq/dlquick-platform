@@ -1,0 +1,23 @@
+name: Domain Health
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 3 * * *' # nightly 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci || npm i
+      - name: Run domain health
+        env:
+          DOMAINS: https://www.dlquick.co.uk,https://dlquick-platform-git-main-dlq.vercel.app
+        run: npm run test:domains

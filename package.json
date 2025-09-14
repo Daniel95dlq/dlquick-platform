@@ -28,6 +28,7 @@
     "dev:3001": "PORT=3001 next dev",
     "build": "next build",
   "test:smoke": "node scripts/smoke-test.js",
+  "test:domains": "node scripts/domain-health.mjs",
     "vercel-build": "rm -f next.config.ts && next build",
     "start": "next start",
     "postinstall": "prisma generate",
