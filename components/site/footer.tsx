@@ -7,7 +7,6 @@ export default function Footer() {
           <span>© {new Date().getFullYear()} DLQuick</span>
         </a>
         <nav className="flex items-center gap-4">
-          <a href="/legal" className="hover:opacity-90">Legal</a>
           <a href="/privacy" className="hover:opacity-90">Privacy</a>
           <a href="/terms" className="hover:opacity-90">Terms</a>
           <a href="/partners" className="hover:opacity-90">Partners</a>

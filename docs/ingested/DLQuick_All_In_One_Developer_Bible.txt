@@ -1,0 +1,180 @@
+   DLQuick ̶ All-in-One Developer Bible (A‒Z, Dynamic &
+                    Production-Ready)
+Royal Blue & Chrome Gold · Wings + Watch Logo · English (UK) Only
+
+0) Mission & Deliverables
+• Build a fully functional DLQuick platform (Web + Customer App + Driver App + Store App + Admin Panel).
+• No placeholders or static demos; everything dynamic and wired to APIs and DB.
+• Confidential fees/commissions/refund logic are admin-only and in Terms; never exposed in public UI.
+
+1) Tech Stack & Monorepo Structure
+Recommended:
+• Frontend: Next.js (App Router) + TypeScript + Tailwind + shadcn/ui + Zustand (state).
+• Backend: NestJS + PostgreSQL (Prisma ORM) + Redis (queues, cache).
+• Realtime: WebSockets (Socket.IO) for tracking.
+• Payments: Stripe (Connect or Split).
+• POS: EPOS Now, Square, Shopify POS, Lightspeed, Clover connectors.
+
+Repository Layout
+
+        /apps
+              /web                              (Next.js, public site + /explore + auth + checkout + tracking)
+              /admin                         (Next.js or React Admin for HQ panel)
+              /customer-mobile  (React Native Expo)
+              /driver-mobile      (React Native Expo)
+              /store-web               (Next.js store portal)
+        /packages
+              /ui                               (shared components, design system)
+              /utils                       (shared utils, validation, i18n en-GB only)
+              /api                             (NestJS backend: modules for auth, catalog, orders, payments, trackin
+        g, reviews, pos, legal)
+        /infra                             (IaC if used)
+
+Key Scripts
+
+        pnpm   i
+        pnpm   --filter   @dlq/api dev
+        pnpm   --filter   @dlq/web dev
+        pnpm   --filter   @dlq/admin dev
+
+2) Environment Variables (sample .env)
+
+        DATABASE̲URL=postgres://...
+        REDIS̲URL=redis://...
+        STRIPE̲SECRET=sk̲live̲...
+        STRIPE̲WEBHOOK̲SECRET=whsec̲...
+        JWT̲SECRET=...
+        NEXT̲PUBLIC̲MAPS̲KEY=...
+        POS̲EPOSNOW̲KEY=...
+        POS̲SQUARE̲APP̲ID=...
+        POS̲SHOPIFY̲KEY=...
+        POS̲LIGHTSPEED̲KEY=...
+        POS̲CLOVER̲KEY=...
+
+
+3) Design System (Royal Blue & Chrome Gold)
+• Colours: Royal Blue #0a1a4f, Matte/Chrome Gold #d4af37; grayscale neutral for text.
+• Buttons: rounded-2xl, soft shadows, hover glow; icons thin-line gold.
+• Fonts: Inter / Poppins / Montserrat; sizes: xl headings, base body.
+• Motion: subtle fade/slide, 150‒250ms.
+
+4) Public Routes & Unified Explore Page
+• Replace /services, /categories, /search with a single /explore route.
+• Apply 301 redirects from old routes to /explore.
+• Explore layout: search bar (with voice), filter chips (Urgent, Tracked, Halal, Vegan, Gluten-free, 18+), category
+accordions, subcategory chips, results list with infinite scroll.
+
+Background Imagery
+• Path: /public/assets/backgrounds//.jpg
+• Cities: Liverpool default; add Manchester, London.
+• Apply dark-blue gradient overlay (40‒60% opacity) for readability.
+
+5) Quotes & Bookings (Forms & Payloads)
+Services (Removals/Trades) ̶ Quote Fields
+• Customer: name, phone, email
+• Service: category, subcategory, notes
+• Route: pickup, dropoff, extra stops
+• Schedule: preferred slot, flexible?
+• Options: van size, helpers, floors/stairs, lift?, packing, dismantle/reassemble, materials
+• Attachments: photos
+
+Shopping Deliveries ̶ Fields
+• Pickup type (person/store/locker) + reference/order number
+• Item size/weight/value (trigger Buyer Protection if high value)
+• Route addresses, ASAP vs scheduled
+• Proof: QR scan + 3-digit code for high-value
+
+Groceries & Food ̶ Fields
+• Store selection + basket items
+• Allergen flags on item pages
+• Substitutions preference
+• Delivery window, contactless
+• Notes to driver/store
+
+Booking Table ̶ DB Columns
+
+        id (uuid PK), type (service¦shopping̲delivery¦groceries¦marketplace), customer̲id, partner̲id nullable,
+        status (quote¦pending¦confirmed¦assigned¦in̲route¦completed¦returned¦cancelled), schedule̲at,
+        route jsonb, options jsonb, price̲internal jsonb (server-only), proof jsonb (qr̲scans, otp̲code, photos),   au
+        dit jsonb
+
+6) API Endpoints (NestJS)
+
+        POST         /api/quotes                                ->  create quote (service/shopping/groceries)
+        POST         /api/bookings                            -> confirm booking (uses quote id)
+        GET           /api/search?q=&filters;=      -> unified search for categories, stores, items
+        GET           /api/tracking/:orderId       -> public tracking payload (driver position, ETA)
+        POST         /api/proof/pickup-scan        -> store QR scan marks in̲route
+        POST         /api/proof/dropoff-scan     -> delivery QR + 3-digit code
+        POST         /api/consent/cookies             -> store cookie consent choice
+        POST         /api/consent/privacy             -> DSAR export/delete requests
+        POST         /api/pos/webhooks                    -> POS status updates (orders/stock)
+        POST         /api/reviews                              -> verified-purchase reviews only
+
+Security & Auth
+• JWT + refresh rotation; RBAC: customer, partner, store, staff, admin.
+• Never expose commissions/fees/refund rules in public endpoints.
+• Audit logs for all admin actions.
+
+7) Tracking & Driver Logic
+• Socket updates every 5‒10s; ETA recompute client-side; offline handling with toasts.
+• Vehicle details visible to customer: type, registration, DLQ branded?
+• Arrival: 15s timer -> auto-call + SMS if no response.
+• Driver app: Safety SOS (shake/voice/long-press), Digital Driver ID (QR).
+
+8) Legal & Compliance (Condensed Actions)
+• DMCC 2024 (Apr 2025): Include mandatory fees upfront; ban fake reviews & dark patterns.
+• Online Safety Act (Mar 2025): reporting + moderation routes; risk mitigations.
+• PECR/GDPR: Cookie banner with Accept/Reject/Manage + consent logs; DSAR endpoints.
+• Consumer Contracts/CRA: pre-contract info; 14-day rights except food/perishables.
+• FSA Allergens: show 14 allergens; distance-seller disclosures on item pages.
+• Alcohol: Age-gate + delivery verification logs.
+Public pages show concise notices; full texts in /privacy, /terms, /cookies + PDF downloads. Refund rules only in Terms
+& Admin.
+
+9) SEO, Cookies & Analytics
+• Per-page meta titles/descriptions; sitemap.xml, robots.txt, OpenGraph/Twitter tags.
+• Cookie banner with 3 buttons; preference center; server-side consent log.
+• Events: home̲view, explore̲filter, product̲add, checkout̲start, payment̲success, order̲assigned, driver̲arrived,
+qr̲pickup̲scan, qr̲drop̲scan, sos̲triggered, return̲confirmed.
+
+10) Backgrounds Pack (Placement Guide)
+
+        /public/assets/backgrounds/
+             deliveries/liverpool.jpg
+             groceries/liverpool.jpg
+             marketplace/liverpool.jpg
+             services/liverpool.jpg
+             deliveries/manchester.jpg
+             deliveries/london.jpg
+        (Use AVIF/WEBP with JPEG          fallback;   overlay gradient   for   contrast;   alt   text   describes   city+category.)
+
+
+11) Acceptance Checklist
+• Explore page replaces Services/Categories/Search; 301 redirects in place.
+• All forms validate; payloads match schema; pricing stays server-side.
+• Legal pages have full HTML + PDF download; cookie banner compliant.
+• Tracking real-time works; arrival auto-call/SMS works; proof scans logged.
+• Admin panel exposes financial splits & refund handling; public UI does NOT.
+• Branding is consistent (royal blue + gold); performance P95 < 1.2s.
+
+12) Quick Start ̶ VS Code GPT-5 Agent (Exact Instructions)
+
+        1. Create monorepo structure as listed under 'Tech Stack & Monorepo Structure'.
+        2. Initialise Next.js in /apps/web and /apps/admin; NestJS in /packages/api; Expo apps in /apps/customer
+        -mobile and /apps/driver-mobile.
+        3. Add Tailwind + shadcn/ui to Next.js apps; set design tokens (royal blue, gold).
+        4. Implement /explore page with search, filter chips, category accordions, subcategory chips, results list.
+        5. Build forms for Quotes & Bookings; wire to NestJS endpoints listed in 'API Endpoints'.
+        6. Implement Tracking socket; show vehicle details; 15s arrival auto-call + SMS.
+        7. Add Legal pages with full HTML; attach PDF downloads from /public/legal/*.pdf.
+        8. Add Cookie banner (Accept/Reject/Manage) with consent logging endpoints.
+        9. Integrate Stripe; do not display commissions in UI; compute payouts server-side; show totals only.
+        10. Add Admin panel modules: Earnings, Reviews moderation, Returns confirmations, POS settings, Inci
+        dents.
+        11. Add POS webhooks and sync jobs in /packages/api/modules/pos; store logs in Admin.
+        12. Configure redirects from /services, /categories, /search -> /explore (301). Deploy.
+
+Note: All confidential logic (fees, commissions, refunds) is Admin-only and in Legal documents; never expose in public
+UI.
+

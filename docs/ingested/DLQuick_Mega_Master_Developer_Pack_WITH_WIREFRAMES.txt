@@ -1,0 +1,403 @@
+        DLQuick ̶ Mega Master Developer Pack (With
+                      Wireframes)
+Developer Edition · Royal Blue & Chrome Gold Theme · Wings + Watch Logo
+
+Index
+• Part I ̶ Web Platform & Architecture
+• Part II ̶ POS & Till Integration
+• Part III ̶ Legal Pack (UK GDPR & Contracts)
+• Part IV ̶ Financials & Fees
+• Part V ̶ Branding (Royal Blue & Chrome Gold)
+• Part VI ̶ Extra Bomb Features
+• Part VII ̶ Apps (Detailed Specs + Wireframes): Customer, Driver/Partner, Store/Merchant, Admin/Support
+
+Part I ̶ Web Platform & Architecture (Developer Pointers)
+• Stack recommendation: Next.js (App Router) + TypeScript + Tailwind + shadcn/ui; API: NestJS + PostgreSQL;
+Realtime: WebSockets; Queue: BullMQ.
+• Core modules: Auth, Catalog, Orders, Payments, Tracking, Reviews, Notifications, Files, Analytics.
+• Multi-basket orchestration: Single checkout across groceries, services, marketplace; separate fulfillment pipelines under
+one payment intent.
+• Tracking: Driver GPS updates every 5‒10s; show vehicle type + plate; 15s auto-call/auto-SMS on arrival.
+
+Part II ̶ POS & Till Integration
+• Connectors: EPOS Now, Square, Shopify POS, Clover, Lightspeed; use OAuth where available, otherwise API keys.
+• Sync: Products (name, SKU, price, stock), Orders (status webhooks), Returns (store-confirmed).
+• Labels: QR generated in store; driver scanning marks 'in route'. No mobile Bluetooth printers.
+
+Part III ̶ Legal Pack (UK GDPR & Contracts)
+• Include: Terms, Privacy, Cookie, Driver/Partner Agreement, Store Agreement, AML, Insurance & Liability, Safety,
+Background Checks, Buyer Protection.
+• Food: strict No-Refund on returned food deliveries; non-food uses Returns page with store receipt confirmation.
+
+Part IV ̶ Financials & Fees
+• Commissions: 20% food; 15% most services/deliveries. Markup 2%/product; £0.50 service fee; £2 platform fee.
+• Driver logic: Fair Stack Pay Mode; Bulk van rates; Taxi-style jobs 10% fee; Removals 15% + auto calc add-ons.
+
+Part V ̶ Branding (Royal Blue & Chrome Gold)
+• Colours: Royal Blue (#0a1a4f baseline) & Chrome/Matte Gold (#d4af37 guidance).
+• Buttons: rounded-2xl, soft shadows, hover shine; Typography: Inter/Poppins/Montserrat; Iconography: thin-line gold.
+
+Part VI ̶ Extra Bomb Features
+• Premium splash, dynamic backgrounds per category, trust badges, Premium Badge (£5.99), referrals, SOS, Digital
+Driver ID.
+
+Part VII ̶ Apps (Detailed Specs + Wireframes)
+A. Customer App ̶ Screens & Wireframes
+Screen: Home ̶ Purpose: entry to categories; personalised promos; quick Track button.
+
+   Home
+
+
+     Top Promo Banner (gold gradient)
+
+
+
+
+     Categories Grid (Food, Groceries, Services, Marketplace)
+
+
+
+
+     Recommended / Popular Stores
+
+
+
+
+     Floating 'Track Order' Button
+
+
+
+
+    Home             Search             Basket             Track           Profile
+
+
+Controls: Category cards (tap), Search bar, Track button (fixed). States: loaded/empty/error. Analytics: home̲view,
+category̲click, search̲open.
+Acceptance: Home loads <800ms on Wi-Fi; tap category → list in <500ms; Track fixed bottom-right.
+
+Screen: Search & Filters ̶ Purpose: find items/stores/services fast.
+
+
+
+   Search
+
+
+      Search Bar + Voice
+
+
+
+
+      Chips: Halal, Vegan, Gluten-free, Spicy
+
+
+
+
+      Results List (store/item cards)
+
+
+
+
+      Filter/Sort Bottom Sheet CTA
+
+
+
+
+     Home             Search              Basket              Track             Profile
+
+
+Controls: search input, chips, sort, filters; States: no results; Actions: add to basket; Analytics: search̲query, filter̲apply.
+
+Screen: Basket & Checkout ̶ Purpose: single checkout for multi-category basket.
+
+
+
+   Basket
+
+
+     Basket Items (grouped by category/store)
+
+
+
+
+     Fees: service (£0.50), platform (£2), markup 2%
+
+
+
+
+     Delivery Time Slot / ASAP
+
+
+
+
+     Pay Button (Apple/Google/Stripe)
+
+
+
+
+    Home             Search             Basket            Track            Profile
+
+
+Actions: update qty, remove, choose slot, apply voucher. Edge: out-of-stock sync via POS. Analytics: checkout̲start,
+payment̲success.
+
+Screen: Tracking ̶ Purpose: live route; vehicle type & plate; 15s arrival timer.
+
+
+
+   Track
+
+
+     Map + Route + Driver Avatar
+
+
+
+
+     Vehicle: Car/Van/Bike + Plate + DLQ branded
+
+
+
+
+     ETA + Status + Delay Notice
+
+
+
+
+     Call/SMS/Chat + 15s Auto-Call Toggle
+
+
+
+
+    Home             Search             Basket             Track            Profile
+
+
+Edge: GPS loss state; Actions: leave notes; Buyer protection for expensive items: QR + 3-digit code handover.
+
+B. Driver / Partner App ̶ Screens & Wireframes
+Screen: Dashboard & Earnings ̶ Purpose: live earnings, cash out, day/week/month.
+
+
+
+   Driver Dashboard
+
+
+     Earnings Cards (Today/Week/Month)
+
+
+
+
+     Withdrawable Balance + 'Pay Me Now'
+
+
+
+
+     Live Jobs (incoming / active)
+
+
+
+
+     Shortcuts: Documents, Vehicles, Settings
+
+
+
+
+    Home             Search            Basket          Track           Profile
+
+Logic: 'Pay Me Now' limited by balance; Stacked orders show Fair Stack Pay breakdown.
+
+Screen: Job Details + Navigation ̶ Purpose: accept → pickup → deliver flow.
+
+
+
+   Job Details
+
+
+     Pickup Card (store name, QR to scan)
+
+
+
+
+     Items / Handover Notes
+
+
+
+
+     Navigation CTA (maps)
+
+
+
+
+     Delivery Card (customer, QR + 3-digit code)
+
+
+
+
+    Home             Search            Basket             Track            Profile
+
+
+Actions: scan QR at pickup (in-route), scan QR + enter code at delivery; Edge: store busy delay prompt.
+
+Screen: Safety & SOS ̶ Purpose: silent emergency trigger.
+
+
+
+   Safety / SOS
+
+
+     Stealth Trigger Info
+
+
+
+
+     Emergency Contacts + HQ Line
+
+
+
+
+     Send Live Location + Incident Note
+
+
+
+
+     Cancel / False Alarm
+
+
+
+
+    Home             Search               Basket         Track            Profile
+
+
+Activation: shake, voice phrase, or long-press; No sound/vibration; Sends GPS + Driver ID to HQ.
+
+C. Store / Merchant App ̶ Screens & Wireframes
+Screen: Orders Board ̶ Purpose: manage new/in-progress/ready orders.
+
+  Orders Board
+
+    New Order #1043 ̶ ETA Driver 18:05 ̶ Print Label (QR)
+
+
+
+
+    In-Progress #1042 ̶ Packing...
+
+
+
+
+    Ready #1041 ̶ Waiting Pickup
+
+
+
+
+    Returned #1035 ̶ Awaiting Confirmation
+
+
+
+
+Actions: update status, print QR label; Busy store detection auto-notifies customers of delays.
+
+Screen: POS Sync Settings ̶ Purpose: connect EPOS/Square/Shopify/Clover/Lightspeed.
+
+  POS Sync Settings
+
+    Connect EPOS Now ̶ OAuth
+
+
+
+
+    Square ̶ Connect
+
+
+
+
+    Shopify POS ̶ API Key
+
+
+
+
+    Lightspeed ̶ Connect
+
+
+
+
+Data: products, stock, prices, orders; Webhooks to update order statuses and stock in real-time.
+
+Screen: Returns Confirmation ̶ Purpose: store must confirm receipt before driver taps 'Returned'.
+
+  Returns Confirmation
+
+    Return #203 ̶ Items list ̶ Confirm Received
+
+
+
+
+    Return #199 ̶ Items list ̶ Confirm Received
+
+
+
+
+    Return #188 ̶ Items list ̶ Confirm Received
+
+
+
+
+Edge: partial returns; generates credit note; triggers customer notification and admin log.
+
+D. Admin / Support Panel ̶ Screens & Wireframes (Bonus)
+Screen: Live Map & Incidents ̶ Purpose: monitor drivers, orders, incidents.
+
+  Live Map & Incidents
+
+     Driver 42 ̶ Medium Van ̶ 7 orders ̶ On Route
+
+
+
+
+     Incident ̶ Delay Reported by Driver 15 ̶ Queue 2
+
+
+
+
+     Customer Chat ̶ Ticket #A-1021 ̶ Awaiting Human
+
+
+
+
+     System Health ̶ All green (AI auto-heal active)
+
+
+
+
+Controls: filter by area/status; drill into driver path; force-reassign job; broadcast alerts.
+
+Screen: Earnings & Commission ̶ Purpose: platform revenue and payouts.
+
+  Earnings & Commission
+
+    Today: £4,320 ̶ Drivers £3,100 ̶ DLQ £1,220
+
+
+
+
+    Food (20%), Services/Deliveries (15%), Markup 2%, Fees (0.5/2)
+
+
+
+
+    Bulk Van Routes ̶ Payouts queued
+
+
+
+
+    Stripe Split Payments ̶ OK
+
+
+
+
+Actions: manual adjustments; export statements; audit logs; fraud checks.
+
+Developer Notes ̶ Events & Acceptance
+• Events: home̲view, category̲click, search̲query, product̲add, checkout̲start, payment̲success, order̲assigned,
+driver̲arrived, qr̲pickup̲scan, qr̲drop̲scan, sos̲triggered, return̲confirmed.
+• Performance SLAs: P95 < 1.2s for core views; tracking socket reconnect < 3s; GPS drift handling; offline toasts.
+• Security: JWT + refresh rotation; PII encrypted at rest; role-based ACL; audit trail for all admin actions.
+

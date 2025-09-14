@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'dlq-navy': '#0E2640',
+        'dlq-navy': '#0a1a4f',
         'dlq-gold': '#D4AF37',
         'dlq-gold-600': '#B38E1E',
       },

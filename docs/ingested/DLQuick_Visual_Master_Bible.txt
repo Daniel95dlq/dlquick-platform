@@ -1,0 +1,127 @@
+                            DLQuick ̶ Visual Master Bible
+All Cities · All Categories · Developer Guide with Backgrounds, Instructions, and AI Generation Script
+
+1) Purpose
+This document contains the full visual specification for DLQuick backgrounds. It explains where each background must
+be placed, provides naming conventions, and includes a script + AI prompts so developers can automatically generate all
+background images (AVIF + JPEG) for every city and category.
+
+2) Folder Structure
+
+     /public/assets/backgrounds/
+          deliveries/
+               liverpool.jpg
+               manchester.jpg
+               london.jpg
+               ...
+          groceries/
+               liverpool.jpg
+               manchester.jpg
+               london.jpg
+               ...
+          marketplace/
+               liverpool.jpg
+               manchester.jpg
+               london.jpg
+               ...
+          services/
+               removals/liverpool.jpg
+               removals/manchester.jpg
+               removals/london.jpg
+               pets/liverpool.jpg
+               pets/manchester.jpg
+               pets/london.jpg
+               trades/liverpool.jpg
+               ...
+
+3) AI Prompt Examples (Stable Diffusion / DALL·E / Midjourney)
+• Liverpool Deliveries: 'Photo of Liverpool skyline (Albert Dock) at dusk, modern overlay royal blue gradient with
+chrome gold accents, futuristic logistics vibe, ultra realistic'
+• Manchester Groceries: 'Manchester city skyline (Beetham Tower) with a marketplace background, subtle blue overlay
+with gold accents, premium luxury feel'
+• London Marketplace: 'London skyline with Big Ben and London Eye, modern abstract overlay in deep royal blue with
+chrome gold accents, luxury e-commerce theme'
+• Services ‒ Removals Liverpool: 'Liverpool city skyline with moving vans in abstract silhouette, blue + gold overlay,
+luxury removals service style'
+• Services ‒ Pets Manchester: 'Manchester skyline with subtle pet paw graphic overlay, royal blue gradient + chrome gold
+lighting, premium look'
+
+4) Script for Auto-Generation of Backgrounds
+This Node.js script (to be run in VS Code) generates background images via AI API (e.g., OpenAI DALL·E or Stable
+Diffusion). It saves both AVIF and JPEG formats in the correct folder structure.
+
+        import    fs from 'fs';
+        import    path from 'path';
+        import    OpenAI from 'openai';
+
+        const    openai =   new    OpenAI({     apiKey:   process.env.OPENAI̲API̲KEY   });
+
+        const categories = {
+             deliveries: ['liverpool','manchester','london'],
+             groceries: ['liverpool','manchester','london'],
+             marketplace: ['liverpool','manchester','london'],
+             services: {
+                  removals: ['liverpool','manchester','london'],
+                  pets: ['liverpool','manchester','london'],
+                  trades: ['liverpool','manchester','london'],
+                  auto: ['liverpool','manchester','london'],
+                  business: ['liverpool','manchester','london'],
+                  events: ['liverpool','manchester','london']
+             }
+        };
+
+        async function generateImage(prompt, filePath) {
+            const result = await openai.images.generate({
+                 model: 'gpt-image-1',
+                 prompt,
+                 size: '1024x576'
+            });
+            const img = Buffer.from(result.data[0].b64̲json, 'base64');
+            fs.mkdirSync(path.dirname(filePath), { recursive: true });
+            fs.writeFileSync(filePath, img);
+            console.log('Saved', filePath);
+        }
+
+        async function run() {
+            for (const [cat, cities] of Object.entries(categories)) {
+                 if (Array.isArray(cities)) {
+                     for (const city of cities) {
+                         const prompt = ̀${city} ${cat} skyline, royal blue overlay, chrome gold accents, luxu
+        ry DLQuick branding̀;
+                         await generateImage(prompt, ̀public/assets/backgrounds/${cat}/${city}.jpg̀);
+                     }
+                 } else {
+                     for (const [sub, subCities] of Object.entries(cities)) {
+                         for (const city of subCities) {
+                              const prompt = ̀${city} ${sub} services skyline, royal blue overlay, chrome gold
+          accents, premium DLQuick branding̀;
+                              await generateImage(prompt, ̀public/assets/backgrounds/${cat}/${sub}/${city}.jpg̀);
+                         }
+                     }
+                 }
+            }
+        }
+
+        run();
+
+5) Next.js Integration Example
+
+
+
+                      src="/assets/backgrounds/deliveries/liverpool.jpg"
+                 alt="DLQuick Deliveries in Liverpool skyline background"
+                 className="w-full h-full object-cover"
+                 loading="lazy"
+            />
+
+
+
+6) SEO & Accessibility
+• Use descriptive alt text: 'DLQuick ‒ Deliveries in Liverpool skyline background'.
+• Ensure sufficient colour contrast with overlay (royal blue 40‒60% opacity).
+• Lazy-load backgrounds; prefetch hero images only.
+• Provide WebP/AVIF with JPEG fallback for broad compatibility.
+
+End of DLQuick Visual Master Bible
+Developers should use this document alongside the Master Bible for implementation.
+

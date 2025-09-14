@@ -191,15 +191,14 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         )}
       </div>
 
-      <div className="mt-10 border border-dlq-gold/30 rounded-lg bg-[#10243d] p-5">
+  <div id="get-started" className="mt-10 border border-dlq-gold/30 rounded-lg bg-[#10243d] p-5">
         <h2 className="font-semibold text-dlq-gold mb-3">Get started</h2>
         <p className="text-gray-200 text-sm mb-4">Tell us a few details and we’ll send you a quote.</p>
         <QuoteForm serviceSlug={service.slug} serviceTitle={service.title} fields={quoteFieldsByService[service.slug] ?? []} />
       </div>
 
       <div className="mt-8 text-sm text-gray-300">
-        Sections above are derived from the legal pack. For the full version see {" "}
-        <a href="/legal" className="underline">/legal</a>.
+        Sections above summarise our standard approach. Full policy texts will be published soon.
       </div>
     </div>
   )

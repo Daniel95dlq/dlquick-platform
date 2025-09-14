@@ -1,0 +1,83 @@
+DLQuick ̶ Web Platform & Legal Master Pack
+
+
+
+
+Royal Blue & Chrome Gold Edition
+
+Part I ‒ Web Platform Plan
+- Homepage: Dynamic sections, shop lists, menus, backgrounds.
+
+- Services & Categories: Full breakdown (food, groceries, removals, electricians, barbers, etc).
+
+- Marketplace: Cars, car parts, clothes, items.
+
+- Tracking: Dedicated /track page.
+
+- Accounts: Customer, Partner, Store, Admin.
+
+- AI Support + Chat, Multi-checkout.
+
+
+
+Part II ‒ API & Till Integration
+- POS sync with EPOS Now, Square, Clover, Shopify POS, Lightspeed.
+
+- Auto stock & order sync, QR label system.
+
+- No Bluetooth printers for drivers, store-only printing.
+
+
+
+Part III ‒ Legal Documents
+- Terms & Conditions, Privacy Policy (GDPR UK), Cookie Policy.
+
+- Driver/Partner Agreement (self-employed, LTD).
+
+- Store Agreement.
+
+- Return & Refund Policy (No refunds for food, returns for non-food with store confirmation).
+
+- Insurance & Liability clauses.
+
+- Anti-Money Laundering & Anti-Fraud policy.
+
+- Emergency & Safety Protocols (SOS, crash detection).
+
+- Background check policy, Buyer protection (inspired by eBay/Vinted).
+
+
+
+Part IV ‒ Financials & Fees
+- 20% food cut, 15% services & deliveries cut.
+
+- 2% markup per product, £0.50 service fee, £2 platform fee.
+
+- Driver payouts: Fair Stack Pay, Bulk Van, Taxi jobs, Removals %.
+
+- Subscriptions: Barbers, salons, dentists, etc.
+
+
+
+Part V ‒ Branding Pack
+- DLQuick™ trademark & IP protection.
+
+- Logo pack: Wings + Stopwatch variations.
+
+- Colour palette: Royal Blue + Chrome/Matte Gold.
+
+- Typography & UI rules.
+
+- Visual mockups for key screens.
+
+
+
+Appendices
+- AI monitoring & auto-healing system.
+
+- Notifications flow (auto calls, texts, delay timers).
+
+- Invoices system (customers + B2B).
+
+- Safety/emergency triggers.
+

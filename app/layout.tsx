@@ -2,8 +2,9 @@ import "./globals.css"
 import Navbar from "../components/site/navbar"
 import Footer from "../components/site/footer"
 import { brandFont } from "../lib/fonts"
+import CookieBanner from "../components/site/cookie-banner"
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: any }) {
 	return (
 		<html lang="en" className={brandFont.className}>
 			<body className="bg-[#0b1b2e] text-gray-100">
@@ -12,6 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					{children}
 				</main>
 				<Footer />
+	<CookieBanner />
 			</body>
 		</html>
 	)
@@ -25,7 +27,6 @@ export const metadata = {
 	},
 	description: 'On-demand deliveries and services across the UK.',
 	applicationName: 'DLQuick',
-	themeColor: '#0E2640',
 	icons: {
 		icon: '/icon.svg',
 	},
@@ -41,4 +42,8 @@ export const metadata = {
 		site: '@dlquick',
 		images: ['/opengraph-image'],
 	},
+}
+
+export const viewport = {
+	themeColor: '#0a1a4f',
 }

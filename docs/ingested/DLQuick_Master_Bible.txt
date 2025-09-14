@@ -1,0 +1,56 @@
+          DLQuick ̶ Master Bible (Unified Developer Pack)
+All-in-One: Wireframes + Specs + Legal + Explore Page + Bookings + Quick Start
+
+About This Document
+• This Master Bible unifies all previous deliverables:
+• - Wireframes & feature breakdowns (Customer, Driver, Store, Admin).
+• - Developer summary (what the owner requested vs clarifications).
+• - Legal & compliance updates (UK DMCC 2024, Online Safety Act 2023, GDPR, etc.).
+• - Unified Explore Page spec (merging Services, Categories, Search).
+• - Quotes & Bookings tables and payloads.
+• - All-in-One Developer Bible (stack, routes, API endpoints, forms, tracking, admin, backgrounds).
+• Use this single document as the full A‒Z implementation guide for DLQuick.
+
+Part I ̶ Wireframes & Feature Specs (Customer, Driver, Store, Admin)
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Part II ̶ Project Summary (Requests vs Clarifications)
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Part III ̶ Legal & Compliance Update (Sept 2025)
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Part IV ̶ Unified Explore Page Spec
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Part V ̶ Quotes & Bookings Tables
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Part VI ̶ All-in-One Developer Bible (Stack, Routes, API, DB, Backgrounds,
+Quick Start)
+See integrated content from previous documents. Full details are embedded in this Master Bible.
+
+Acceptance Checklist (for Developers)
+• English (UK) only across all content.
+• Explore page replaces Services/Categories/Search; redirects in place.
+• Forms validate; payloads match schema; pricing logic stays server-side.
+• Legal pages (Privacy/Terms/Cookies) have full HTML + downloadable PDFs.
+• Cookie banner compliant with PECR/GDPR.
+• Tracking real-time updates; auto-call/SMS works; proof-of-delivery logged.
+• Admin panel shows financial splits/refund rules; not exposed in public UI.
+• Branding consistent (Royal Blue + Chrome Gold).
+• Performance P95 < 1.2s.
+• Background imagery set per category/city with gradient overlay.
+
+Quick Start for Developers (VS Code GPT-5 Agent)
+• 1. Set up monorepo structure (Next.js web/admin, React Native apps, NestJS API).
+• 2. Add Tailwind + shadcn/ui; configure design tokens (royal blue & gold).
+• 3. Implement /explore page with categories, subcategories, search, filters.
+• 4. Wire Quote & Booking forms to API endpoints.
+• 5. Integrate Stripe; handle payouts server-side only.
+• 6. Add Tracking (socket updates, vehicle info, auto-call/SMS).
+• 7. Insert Legal pages with HTML text + PDF downloads.
+• 8. Add Cookie banner with consent logging.
+• 9. Configure POS integrations & webhooks (orders/stock sync).
+• 10. Deploy with redirects, SEO metadata, and backgrounds pack.
+
